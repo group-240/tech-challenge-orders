@@ -50,3 +50,6 @@ logging:
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 
 mercado-pago.access-token: TEST-6132655548485399-050519-5c52fb1e9a2a627837f4bff581e36402-495359857
+
+customer-api:
+  base-url: https://36fb3516efe2bc329d2904082a185f95.m.pipedream.net
