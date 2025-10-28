@@ -25,14 +25,17 @@ public class CustomerApiClient {
             connection.setRequestMethod("GET");
             connection.setRequestProperty("Accept", "application/json");
 
-             int statusCode = connection.getResponseCode();
+            int statusCode = connection.getResponseCode();
 
             if (statusCode == 404) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer not found " + cpf);
             }
 
             if (connection.getResponseCode() != 200) {
-                throw new NotFoundException("Customer not found: HTTP " + connection.getResponseCode());
+                throw new ResponseStatusException(
+                    HttpStatus.valueOf(statusCode),
+                    "Erro ao buscar cliente: HTTP " + statusCode
+                );
             }
 
             Scanner scanner = new Scanner(connection.getInputStream());
