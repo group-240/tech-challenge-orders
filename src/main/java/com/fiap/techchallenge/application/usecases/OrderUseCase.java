@@ -27,7 +27,7 @@ public interface OrderUseCase {
         public void setQuantity(Integer quantity) { this.quantity = quantity; }
     }
 
-    Order createOrder(UUID customerId, List<OrderItemRequest> items);
+    Order createOrder(String cpf, List<OrderItemRequest> items);
     Optional<Order> findOrderById(Long id);
     List<Order> findByOptionalStatus(OrderStatus status);
     Order updateOrderStatus(Long id, OrderStatus status);

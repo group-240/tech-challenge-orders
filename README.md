@@ -32,7 +32,6 @@ Aplicação Spring Boot com **Clean Architecture** rodando em **AWS EKS** com de
 ## 🔐 Autenticação e Segurança
 
 ### Fluxo de Autenticação
-1. **Cliente registra** via `/api/customers` (cria no Cognito automaticamente)
 2. **Autentica** via `/auth` com CPF (Lambda + Cognito)
 3. **Recebe JWT** válido por 1 hora
 4. **Usa JWT** em endpoints protegidos
@@ -50,11 +49,9 @@ GitHub Secrets → Terraform → Kubernetes Secrets → Pods
 - `POST /api/categories`      - Criar categoria
 - `GET  /api/products`        - Listar produtos
 - `POST /api/products`        - Criar produto
-- `POST /api/customers`       - Registrar cliente
 - `POST /api/webhook/payment` - Webhook Mercado Pago
 
 ### Protegidos (Requer JWT)
-- `GET  /api/customers`          - Listar clientes
 - `POST /api/orders`             - Criar pedido
 - `GET  /api/orders`             - Listar pedidos
 - `PUT  /api/orders/{id}/status` - Atualizar status
@@ -64,7 +61,7 @@ GitHub Secrets → Terraform → Kubernetes Secrets → Pods
 ```
 src/main/java/com/fiap/techchallenge/
 ├── domain/                    # Entidades e regras de negócio
-│   ├── entities/             # Customer, Order, Product, Category
+│   ├── entities/             # Order, Product, Category
 │   ├── repositories/         # Interfaces de repositório
 │   └── exception/           # Exceções de domínio
 ├── application/              # Casos de uso
@@ -177,12 +174,6 @@ git push origin main  # Deploy via GitHub Actions
 ```bash
 # Health check
 curl https://api.tech-challenge.com/api/health
-
-# Registrar cliente
-curl -X POST https://api.tech-challenge.com/api/customers \
-  -H "Content-Type: application/json" \
-  -d '{"name":"João","email":"joao@email.com","cpf":"12345678901"}'
-```
 
 ---
 
