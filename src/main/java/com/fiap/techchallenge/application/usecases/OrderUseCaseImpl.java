@@ -7,9 +7,9 @@ import com.fiap.techchallenge.domain.entities.*;
 import com.fiap.techchallenge.domain.exception.DomainException;
 import com.fiap.techchallenge.domain.exception.NotFoundException;
 import com.fiap.techchallenge.domain.repositories.OrderRepository;
-import com.fiap.techchallenge.domain.repositories.PaymentRepository;
 import com.fiap.techchallenge.domain.repositories.ProductRepository;
 import com.fiap.techchallenge.external.api.CustomerApiClient;
+import com.fiap.techchallenge.external.api.PaymentApiClient;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -27,27 +27,25 @@ public class OrderUseCaseImpl implements OrderUseCase {
 
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
-    private final PaymentRepository paymentRepository;
     private final CustomerApiClient customerApiClient;
+    private final PaymentApiClient paymentApiClient;
 
     public OrderUseCaseImpl(OrderRepository orderRepository,
                             ProductRepository productRepository,
-                            PaymentRepository paymentRepository,
-                            CustomerApiClient customerApiClient) {
+                            CustomerApiClient customerApiClient,
+                            PaymentApiClient paymentApiClient) {
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
-        this.paymentRepository = paymentRepository;
         this.customerApiClient = customerApiClient;
+        this.paymentApiClient = paymentApiClient;
     }
 
     @Override
     public Order createOrder(String cpf, List<OrderItemRequest> items) {
-        JsonNode customerData = customerApiClient.fetchCustomerByCpf(cpf); // Usando o cliente API
+        JsonNode customerData = customerApiClient.fetchCustomerByCpf(cpf);
         List<OrderItem> orderItems = validateAndConvertOrderItems(items);
         return createAndSaveOrder(customerData, orderItems);
     }
-
-
 
     private List<OrderItem> validateAndConvertOrderItems(List<OrderItemRequest> items) {
         List<OrderItem> orderItems = new ArrayList<>();
@@ -101,7 +99,7 @@ public class OrderUseCaseImpl implements OrderUseCase {
         String email = (customerData != null && customerData.has("email")) ? customerData.get("email").asText() : "default@example.com";
         String cpf = (customerData != null && customerData.has("cpf")) ? customerData.get("cpf").asText() : "00000000000";
 
-        String response = paymentRepository.createPaymentOrder(
+        String response = paymentApiClient.createPayment(
             amount, description, paymentMethodId, installments, email, "CPF", cpf
         );
 
