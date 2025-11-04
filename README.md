@@ -172,9 +172,8 @@ git push origin main  # Deploy via GitHub Actions
 
 ### 3. Teste a API
 ```bash
-# Health check
-curl https://api.tech-challenge.com/api/health
-
+mvn clean test jacoco:report
+mvn clean verify
 ---
 
 ## 📄 Licença

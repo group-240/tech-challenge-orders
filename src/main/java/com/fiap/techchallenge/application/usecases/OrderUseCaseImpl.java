@@ -23,12 +23,12 @@ import java.util.UUID;
 
 public class OrderUseCaseImpl implements OrderUseCase {
 
-    private static final String RECORD_NOT_FOUND_MESSAGE = "Record not found";
+    public static final String RECORD_NOT_FOUND_MESSAGE = "Record not found";
 
-    private final OrderRepository orderRepository;
-    private final ProductRepository productRepository;
-    private final PaymentRepository paymentRepository;
-    private final CustomerApiClient customerApiClient;
+    public final OrderRepository orderRepository;
+    public final ProductRepository productRepository;
+    public final PaymentRepository paymentRepository;
+    public final CustomerApiClient customerApiClient;
 
     public OrderUseCaseImpl(OrderRepository orderRepository,
                             ProductRepository productRepository,
@@ -49,7 +49,7 @@ public class OrderUseCaseImpl implements OrderUseCase {
 
 
 
-    private List<OrderItem> validateAndConvertOrderItems(List<OrderItemRequest> items) {
+    public List<OrderItem> validateAndConvertOrderItems(List<OrderItemRequest> items) {
         List<OrderItem> orderItems = new ArrayList<>();
 
         for (OrderItemRequest itemRequest : items) {
@@ -62,7 +62,7 @@ public class OrderUseCaseImpl implements OrderUseCase {
         return orderItems;
     }
 
-    private Product validateProduct(UUID productId) {
+    public Product validateProduct(UUID productId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new NotFoundException("Product not found"));
 
@@ -73,13 +73,13 @@ public class OrderUseCaseImpl implements OrderUseCase {
         return product;
     }
 
-    private void validateQuantity(Integer quantity) {
+    public void validateQuantity(Integer quantity) {
         if (quantity <= 0) {
             throw new DomainException("Quantity must be greater than zero");
         }
     }
 
-    private Order createAndSaveOrder(JsonNode customerData, List<OrderItem> orderItems) {
+    public Order createAndSaveOrder(JsonNode customerData, List<OrderItem> orderItems) {
         String cpf = (customerData != null && customerData.has("cpf")) ? customerData.get("cpf").asText() : null;
 
         Order order = Order.create(cpf, orderItems);
@@ -92,7 +92,7 @@ public class OrderUseCaseImpl implements OrderUseCase {
         return orderRepository.save(order);
     }
 
-    private Long createPaymentOrder(Order order, JsonNode customerData) {
+    public Long createPaymentOrder(Order order, JsonNode customerData) {
         Double amount = order.getTotalAmount().doubleValue();
         String description = "Pagamento para o pedido";
         String paymentMethodId = "pix";
