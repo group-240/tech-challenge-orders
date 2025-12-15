@@ -362,4 +362,96 @@ class OrderUseCaseImplTest {
             orderUseCase.createPaymentOrder(testOrder, customerData);
         });
     }
+
+    @Test
+    @DisplayName("Should create order with null customer data")
+    void shouldCreateOrderWithNullCustomerData() {
+        // Arrange
+        when(paymentApiClient.createPayment(any(), any(), any(), any(), any(), any(), any()))
+                .thenReturn("{\"id\":789}");
+        
+        List<OrderItem> orderItems = List.of(OrderItem.create(product, 1));
+        Order orderWithNullCpf = new Order(1L, null, orderItems, BigDecimal.valueOf(10.00), 
+                                          OrderStatus.RECEIVED, StatusPayment.AGUARDANDO_PAGAMENTO, 
+                                          789L, LocalDateTime.now(), LocalDateTime.now());
+        
+        when(orderRepository.save(any(Order.class))).thenReturn(orderWithNullCpf);
+
+        // Act
+        Order result = orderUseCase.createAndSaveOrder(null, orderItems);
+
+        // Assert
+        assertNotNull(result);
+        assertNull(result.getCpf());
+        assertEquals(789L, result.getIdPayment());
+        verify(orderRepository).save(any(Order.class));
+    }
+
+    @Test
+    @DisplayName("Should create payment order with null customer data")
+    void shouldCreatePaymentOrderWithNullCustomerData() {
+        // Arrange
+        when(paymentApiClient.createPayment(any(), any(), any(), any(), 
+                eq("default@example.com"), eq("CPF"), eq("00000000000")))
+                .thenReturn("{\"id\":999}");
+
+        List<OrderItem> orderItems = List.of(OrderItem.create(product, 1));
+        Order testOrder = Order.create(null, orderItems);
+
+        // Act
+        Long paymentId = orderUseCase.createPaymentOrder(testOrder, null);
+
+        // Assert
+        assertEquals(999L, paymentId);
+        verify(paymentApiClient).createPayment(any(), any(), any(), any(), 
+                eq("default@example.com"), eq("CPF"), eq("00000000000"));
+    }
+
+    @Test
+    @DisplayName("Should create payment order with customer data missing email")
+    void shouldCreatePaymentOrderWithCustomerDataMissingEmail() throws Exception {
+        // Arrange
+        ObjectMapper mapper = new ObjectMapper();
+        String customerJsonNoEmail = "{\"cpf\":\"12345678900\"}";
+        JsonNode customerDataNoEmail = mapper.readTree(customerJsonNoEmail);
+        
+        when(paymentApiClient.createPayment(any(), any(), any(), any(), 
+                eq("default@example.com"), eq("CPF"), eq("12345678900")))
+                .thenReturn("{\"id\":888}");
+
+        List<OrderItem> orderItems = List.of(OrderItem.create(product, 1));
+        Order testOrder = Order.create("12345678900", orderItems);
+
+        // Act
+        Long paymentId = orderUseCase.createPaymentOrder(testOrder, customerDataNoEmail);
+
+        // Assert
+        assertEquals(888L, paymentId);
+        verify(paymentApiClient).createPayment(any(), any(), any(), any(), 
+                eq("default@example.com"), eq("CPF"), eq("12345678900"));
+    }
+
+    @Test
+    @DisplayName("Should create payment order with customer data missing cpf")
+    void shouldCreatePaymentOrderWithCustomerDataMissingCpf() throws Exception {
+        // Arrange
+        ObjectMapper mapper = new ObjectMapper();
+        String customerJsonNoCpf = "{\"email\":\"test@test.com\"}";
+        JsonNode customerDataNoCpf = mapper.readTree(customerJsonNoCpf);
+        
+        when(paymentApiClient.createPayment(any(), any(), any(), any(), 
+                eq("test@test.com"), eq("CPF"), eq("00000000000")))
+                .thenReturn("{\"id\":777}");
+
+        List<OrderItem> orderItems = List.of(OrderItem.create(product, 1));
+        Order testOrder = Order.create(null, orderItems);
+
+        // Act
+        Long paymentId = orderUseCase.createPaymentOrder(testOrder, customerDataNoCpf);
+
+        // Assert
+        assertEquals(777L, paymentId);
+        verify(paymentApiClient).createPayment(any(), any(), any(), any(), 
+                eq("test@test.com"), eq("CPF"), eq("00000000000"));
+    }
 }

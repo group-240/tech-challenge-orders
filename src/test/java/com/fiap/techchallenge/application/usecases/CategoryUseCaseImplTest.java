@@ -68,4 +68,43 @@ class CategoryUseCaseImplTest {
         assertEquals("Não é possível deletar a categoria pois ela está vinculada a um ou mais produtos",
                 exception.getMessage());
     }
+
+    @Test
+    void testDeleteById_SuccessWhenNotLinkedToProducts() {
+        UUID id = UUID.randomUUID();
+        when(categoryRepository.findById(id)).thenReturn(Optional.of(mock(Category.class)));
+        when(productRepository.findByCategoryId(id)).thenReturn(List.of()); // Lista vazia - sem produtos
+
+        categoryUseCase.deleteById(id);
+
+        verify(categoryRepository, times(1)).deleteById(id);
+    }
+
+    @Test
+    void testDeleteById_CategoryNotFound() {
+        UUID id = UUID.randomUUID();
+        when(categoryRepository.findById(id)).thenReturn(Optional.empty());
+
+        NotFoundException exception = assertThrows(NotFoundException.class,
+                () -> categoryUseCase.deleteById(id));
+        assertEquals("Record not found", exception.getMessage());
+    }
+
+    @Test
+    void testUpdateCategory_WithBlankName() {
+        UUID id = UUID.randomUUID();
+
+        DomainException exception = assertThrows(DomainException.class,
+                () -> categoryUseCase.updateCategory(id, ""));
+        assertEquals("Category name cannot be blank.", exception.getMessage());
+    }
+
+    @Test
+    void testUpdateCategory_WithNullName() {
+        UUID id = UUID.randomUUID();
+
+        DomainException exception = assertThrows(DomainException.class,
+                () -> categoryUseCase.updateCategory(id, null));
+        assertEquals("Category name cannot be blank.", exception.getMessage());
+    }
 }

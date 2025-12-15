@@ -149,6 +149,33 @@ class ProductUseCaseImplTest {
         verify(productRepository, times(1)).save(any(Product.class));
     }
 
+    @Test
+    @DisplayName("Should update product with null category successfully")
+    void shouldUpdateProductWithNullCategorySuccessfully() {
+        // Arrange
+        when(productRepository.findById(productId)).thenReturn(Optional.of(product));
+        when(productRepository.save(any(Product.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+
+        // Act
+        Product updatedProduct = productUseCase.updateProduct(
+                productId,
+                "Updated Name",
+                "Updated Description",
+                BigDecimal.valueOf(200.0),
+                null
+        );
+
+        // Assert
+        assertNotNull(updatedProduct);
+        assertEquals("Updated Name", updatedProduct.getName());
+        assertEquals("Updated Description", updatedProduct.getDescription());
+        assertEquals(BigDecimal.valueOf(200.0), updatedProduct.getPrice());
+        verify(productRepository, times(1)).findById(productId);
+        verify(categoryRepository, never()).findById(any());
+        verify(productRepository, times(1)).save(any(Product.class));
+    }
+
 
     @Test
     @DisplayName("Should throw NotFoundException when updating a product that does not exist")
