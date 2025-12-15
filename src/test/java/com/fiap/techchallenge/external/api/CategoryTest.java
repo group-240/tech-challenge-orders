@@ -14,7 +14,7 @@ public class CategoryTest {
     @DisplayName("Deve criar uma categoria usando o construtor")
     public void shouldCreateCategoryUsingConstructor() {
         UUID id = UUID.randomUUID();
-        String name = "Electronics";
+        String name = "Lanches";
 
         Category category = new Category(id, name);
 
@@ -26,7 +26,7 @@ public class CategoryTest {
     @DisplayName("Deve criar uma categoria usando os setters")
     public void shouldCreateCategoryUsingSetters() {
         UUID id = UUID.randomUUID();
-        String name = "Books";
+        String name = "Sobremesas";
 
         Category category = new Category();
         category.setId(id);
@@ -40,7 +40,7 @@ public class CategoryTest {
     @DisplayName("Deve criar uma categoria usando o Builder")
     public void shouldCreateCategoryUsingBuilder() {
         UUID id = UUID.randomUUID();
-        String name = "Clothing";
+        String name = "Bebidas";
 
         Category category = Category.builder()
                 .id(id)
