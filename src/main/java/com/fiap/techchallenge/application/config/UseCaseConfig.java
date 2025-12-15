@@ -5,6 +5,7 @@ import com.fiap.techchallenge.adapters.gateway.*;
 import com.fiap.techchallenge.application.usecases.*;
 import com.fiap.techchallenge.domain.repositories.*;
 import com.fiap.techchallenge.external.api.CustomerApiClient;
+import com.fiap.techchallenge.external.api.PaymentApiClient;
 import com.fiap.techchallenge.external.datasource.repositories.*;
 import com.fiap.techchallenge.external.datasource.mercadopago.MercadoPagoClient;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,11 +31,6 @@ public class UseCaseConfig {
         return new OrderRepositoryGateway(orderJpaRepository);
     }
 
-    @Bean
-    public PaymentRepository paymentRepository(MercadoPagoClient mercadoPagoClient) {
-        return new PaymentRepositoryGateway(mercadoPagoClient);
-    }
-
     // Use Cases (aplicação core)
     @Bean
     public CategoryUseCase categoryUseCase(CategoryRepository categoryRepository, ProductRepository productRepository) {
@@ -51,14 +47,9 @@ public class UseCaseConfig {
     @Bean
     public OrderUseCase orderUseCase(OrderRepository orderRepository,
                                     ProductRepository productRepository,
-                                    PaymentRepository paymentRepository,
-                                    CustomerApiClient customerApiClient) {
-        return new OrderUseCaseImpl(orderRepository, productRepository, paymentRepository, customerApiClient);
-    }
-
-    @Bean
-    public PaymentUseCase paymentUseCase(PaymentRepository paymentRepository) {
-        return new PaymentUseCaseImpl(paymentRepository);
+                                    CustomerApiClient customerApiClient,
+                                    PaymentApiClient paymentApiClient) {
+        return new OrderUseCaseImpl(orderRepository, productRepository, customerApiClient, paymentApiClient);
     }
 
     @Bean
@@ -69,6 +60,11 @@ public class UseCaseConfig {
     @Bean
     public CustomerApiClient customerApiClient(@Value("${customer-api.base-url}") String baseUrl) {
         return new CustomerApiClient(baseUrl);
+    }
+
+    @Bean
+    public PaymentApiClient paymentApiClient(@Value("${payment-api.base-url}") String baseUrl) {
+        return new PaymentApiClient(baseUrl);
     }
 
     // Controllers de orquestração (adapters)
@@ -85,11 +81,6 @@ public class UseCaseConfig {
     @Bean
     public OrderController orderController(OrderUseCase orderUseCase) {
         return new OrderController(orderUseCase);
-    }
-
-    @Bean
-    public PaymentController paymentController(PaymentUseCase paymentUseCase) {
-        return new PaymentController(paymentUseCase);
     }
 
     @Bean
