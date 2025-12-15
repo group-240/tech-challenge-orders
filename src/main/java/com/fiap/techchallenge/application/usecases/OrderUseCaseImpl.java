@@ -27,8 +27,8 @@ public class OrderUseCaseImpl implements OrderUseCase {
 
     public final OrderRepository orderRepository;
     public final ProductRepository productRepository;
-    public final PaymentRepository paymentRepository;
     public final CustomerApiClient customerApiClient;
+    private final PaymentApiClient paymentApiClient;
 
     public OrderUseCaseImpl(OrderRepository orderRepository,
                             ProductRepository productRepository,

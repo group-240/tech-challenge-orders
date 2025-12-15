@@ -7,9 +7,11 @@ import com.fiap.techchallenge.domain.entities.*;
 import com.fiap.techchallenge.domain.exception.DomainException;
 import com.fiap.techchallenge.domain.exception.NotFoundException;
 import com.fiap.techchallenge.domain.repositories.OrderRepository;
-import com.fiap.techchallenge.domain.repositories.PaymentRepository;
 import com.fiap.techchallenge.domain.repositories.ProductRepository;
 import com.fiap.techchallenge.external.api.CustomerApiClient;
+import com.fiap.techchallenge.external.api.PaymentApiClient;
+import com.fiap.techchallenge.external.api.PaymentApiClient;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,7 +41,7 @@ class OrderUseCaseImplTest {
     private ProductRepository productRepository;
 
     @Mock
-    private PaymentRepository paymentRepository;
+    private PaymentApiClient paymentApiClient;
 
     @Mock
     private CustomerApiClient customerApiClient;
@@ -87,7 +89,7 @@ class OrderUseCaseImplTest {
         // Arrange
         when(customerApiClient.fetchCustomerByCpf("12345678900")).thenReturn(customerData);
         when(productRepository.findById(any(UUID.class))).thenReturn(Optional.of(product));
-        when(paymentRepository.createPaymentOrder(any(), any(), any(), any(), any(), any(), any()))
+        when(paymentApiClient.createPayment(any(), any(), any(), any(), any(), any(), any()))
                 .thenReturn("{\"id\":123}");
         when(orderRepository.save(any(Order.class))).thenReturn(order);
 
@@ -106,7 +108,7 @@ class OrderUseCaseImplTest {
 
         verify(customerApiClient).fetchCustomerByCpf("12345678900");
         verify(productRepository).findById(any(UUID.class));
-        verify(paymentRepository).createPaymentOrder(any(), any(), any(), any(), any(), any(), any());
+        verify(paymentApiClient).createPayment(any(), any(), any(), any(), any(), any(), any());
         verify(orderRepository).save(any(Order.class));
     }
 
@@ -331,7 +333,7 @@ class OrderUseCaseImplTest {
     @DisplayName("Should create payment order and parse response")
     void shouldCreatePaymentOrderAndParseResponse() {
         // Arrange
-        when(paymentRepository.createPaymentOrder(any(), any(), any(), any(), any(), any(), any()))
+        when(paymentApiClient.createPayment(any(), any(), any(), any(), any(), any(), any()))
                 .thenReturn("{\"id\":456}");
 
         List<OrderItem> orderItems = List.of(OrderItem.create(product, 1));
@@ -342,14 +344,14 @@ class OrderUseCaseImplTest {
 
         // Assert
         assertEquals(456L, paymentId);
-        verify(paymentRepository).createPaymentOrder(any(), any(), any(), any(), any(), any(), any());
+        verify(paymentApiClient).createPayment(any(), any(), any(), any(), any(), any(), any());
     }
 
     @Test
     @DisplayName("Should handle payment response parsing error")
     void shouldHandlePaymentResponseParsingError() {
         // Arrange
-        when(paymentRepository.createPaymentOrder(any(), any(), any(), any(), any(), any(), any()))
+        when(paymentApiClient.createPayment(any(), any(), any(), any(), any(), any(), any()))
                 .thenReturn("invalid json");
 
         List<OrderItem> orderItems = List.of(OrderItem.create(product, 1));
