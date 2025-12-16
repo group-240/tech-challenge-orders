@@ -39,7 +39,7 @@ class CategoryRestControllerTest {
 
     @Test
     @DisplayName("Should create category successfully")
-    void shouldCreateCategorySuccessfully() {
+    void testShouldCreateCategorySuccessfully() {
         // Arrange
         CategoryRestController.CategoryRequestDTO requestDTO = new CategoryRestController.CategoryRequestDTO();
         requestDTO.setName("Electronics");
@@ -56,7 +56,7 @@ class CategoryRestControllerTest {
 
     @Test
     @DisplayName("Should find category by id successfully")
-    void shouldFindCategoryByIdSuccessfully() {
+    void testShouldFindCategoryByIdSuccessfully() {
         // Arrange
         when(categoryController.findById(categoryId)).thenReturn(Optional.of(category));
 
@@ -71,7 +71,7 @@ class CategoryRestControllerTest {
 
     @Test
     @DisplayName("Should return not found when category does not exist")
-    void shouldReturnNotFoundWhenCategoryDoesNotExist() {
+    void testShouldReturnNotFoundWhenCategoryDoesNotExist() {
         // Arrange
         when(categoryController.findById(categoryId)).thenReturn(Optional.empty());
 
@@ -85,7 +85,7 @@ class CategoryRestControllerTest {
 
     @Test
     @DisplayName("Should find all categories successfully")
-    void shouldFindAllCategoriesSuccessfully() {
+    void testShouldFindAllCategoriesSuccessfully() {
         // Arrange
         List<Category> categories = List.of(category);
         when(categoryController.findAll()).thenReturn(categories);
@@ -101,7 +101,7 @@ class CategoryRestControllerTest {
 
     @Test
     @DisplayName("Should update category successfully")
-    void shouldUpdateCategorySuccessfully() {
+    void testShouldUpdateCategorySuccessfully() {
         // Arrange
         CategoryRestController.CategoryRequestDTO requestDTO = new CategoryRestController.CategoryRequestDTO();
         requestDTO.setName("Updated Electronics");
@@ -119,7 +119,7 @@ class CategoryRestControllerTest {
 
     @Test
     @DisplayName("Should delete category successfully")
-    void shouldDeleteCategorySuccessfully() {
+    void testShouldDeleteCategorySuccessfully() {
         // Arrange
         doNothing().when(categoryController).deleteById(categoryId);
 

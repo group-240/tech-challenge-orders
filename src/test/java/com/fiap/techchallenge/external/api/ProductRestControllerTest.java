@@ -51,7 +51,7 @@ class ProductRestControllerTest {
 
     @Test
     @DisplayName("Should create product successfully")
-    void shouldCreateProductSuccessfully() {
+    void testShouldCreateProductSuccessfully() {
         // Arrange
         ProductRestController.ProductRequestDTO requestDTO = new ProductRestController.ProductRequestDTO();
         requestDTO.setName("Laptop");
@@ -73,7 +73,7 @@ class ProductRestControllerTest {
 
     @Test
     @DisplayName("Should find product by id successfully")
-    void shouldFindProductByIdSuccessfully() {
+    void testShouldFindProductByIdSuccessfully() {
         // Arrange
         when(productController.findProductById(productId)).thenReturn(Optional.of(product));
 
@@ -88,7 +88,7 @@ class ProductRestControllerTest {
 
     @Test
     @DisplayName("Should return not found when product does not exist")
-    void shouldReturnNotFoundWhenProductDoesNotExist() {
+    void testShouldReturnNotFoundWhenProductDoesNotExist() {
         // Arrange
         when(productController.findProductById(productId)).thenReturn(Optional.empty());
 
@@ -102,7 +102,7 @@ class ProductRestControllerTest {
 
     @Test
     @DisplayName("Should find all products successfully")
-    void shouldFindAllProductsSuccessfully() {
+    void testShouldFindAllProductsSuccessfully() {
         // Arrange
         List<Product> products = List.of(product);
         when(productController.findAllProducts()).thenReturn(products);
@@ -118,7 +118,7 @@ class ProductRestControllerTest {
 
     @Test
     @DisplayName("Should find products by name successfully")
-    void shouldFindProductsByNameSuccessfully() {
+    void testShouldFindProductsByNameSuccessfully() {
         // Arrange
         String name = "Laptop";
         List<Product> products = List.of(product);
@@ -135,7 +135,7 @@ class ProductRestControllerTest {
 
     @Test
     @DisplayName("Should find products by category successfully")
-    void shouldFindProductsByCategorySuccessfully() {
+    void testShouldFindProductsByCategorySuccessfully() {
         // Arrange
         List<Product> products = List.of(product);
         when(productController.findProductsByCategory(categoryId)).thenReturn(products);
@@ -151,7 +151,7 @@ class ProductRestControllerTest {
 
     @Test
     @DisplayName("Should update product successfully")
-    void shouldUpdateProductSuccessfully() {
+    void testShouldUpdateProductSuccessfully() {
         // Arrange
         ProductRestController.ProductRequestDTO requestDTO = new ProductRestController.ProductRequestDTO();
         requestDTO.setName("Updated Laptop");
@@ -183,7 +183,7 @@ class ProductRestControllerTest {
 
     @Test
     @DisplayName("Should delete product successfully")
-    void shouldDeleteProductSuccessfully() {
+    void testShouldDeleteProductSuccessfully() {
         // Arrange
         doNothing().when(productController).deleteProduct(productId);
 

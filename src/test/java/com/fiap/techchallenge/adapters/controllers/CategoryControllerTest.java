@@ -37,7 +37,7 @@ class CategoryControllerTest {
 
     @Test
     @DisplayName("Should create category successfully")
-    void shouldCreateCategorySuccessfully() {
+    void testShouldCreateCategorySuccessfully() {
         // Arrange
         String categoryName = "Electronics";
         when(categoryUseCase.createCategory(categoryName)).thenReturn(category);
@@ -52,7 +52,7 @@ class CategoryControllerTest {
 
     @Test
     @DisplayName("Should update category successfully")
-    void shouldUpdateCategorySuccessfully() {
+    void testShouldUpdateCategorySuccessfully() {
         // Arrange
         String newName = "Updated Electronics";
         Category updatedCategory = new Category(categoryId, newName);
@@ -68,7 +68,7 @@ class CategoryControllerTest {
 
     @Test
     @DisplayName("Should find category by id successfully")
-    void shouldFindCategoryByIdSuccessfully() {
+    void testShouldFindCategoryByIdSuccessfully() {
         // Arrange
         when(categoryUseCase.findById(categoryId)).thenReturn(Optional.of(category));
 
@@ -83,7 +83,7 @@ class CategoryControllerTest {
 
     @Test
     @DisplayName("Should find all categories successfully")
-    void shouldFindAllCategoriesSuccessfully() {
+    void testShouldFindAllCategoriesSuccessfully() {
         // Arrange
         List<Category> categories = List.of(category);
         when(categoryUseCase.findAll()).thenReturn(categories);
@@ -99,7 +99,7 @@ class CategoryControllerTest {
 
     @Test
     @DisplayName("Should delete category by id successfully")
-    void shouldDeleteCategoryByIdSuccessfully() {
+    void testShouldDeleteCategoryByIdSuccessfully() {
         // Arrange
         doNothing().when(categoryUseCase).deleteById(categoryId);
 

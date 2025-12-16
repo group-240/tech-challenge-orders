@@ -38,7 +38,7 @@ class WebhookRestControllerTest {
     }
 
     @Test
-    void handleNotification_Success() throws Exception {
+    void testHandleNotification_Success() throws Exception {
         // Arrange
         WebhookRequestDTO webhookRequest = new WebhookRequestDTO();
         webhookRequest.setId(123L);
@@ -66,7 +66,7 @@ class WebhookRestControllerTest {
     }
 
     @Test
-    void handleNotification_WithMinimalData() throws Exception {
+    void testHandleNotification_WithMinimalData() throws Exception {
         // Arrange
         WebhookRequestDTO webhookRequest = new WebhookRequestDTO();
         Data data = new Data();
@@ -86,7 +86,7 @@ class WebhookRestControllerTest {
     }
 
     @Test
-    void handleNotification_WithDifferentPaymentId() throws Exception {
+    void testHandleNotification_WithDifferentPaymentId() throws Exception {
         // Arrange
         WebhookRequestDTO webhookRequest = new WebhookRequestDTO();
         webhookRequest.setId(999L);
@@ -110,7 +110,7 @@ class WebhookRestControllerTest {
     }
 
     @Test
-    void handleNotification_CompletePayload() throws Exception {
+    void testHandleNotification_CompletePayload() throws Exception {
         // Arrange
         WebhookRequestDTO webhookRequest = new WebhookRequestDTO();
         webhookRequest.setId(100L);

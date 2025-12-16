@@ -26,7 +26,7 @@ public class OrderTest {
 
     @Test
     @DisplayName("Deve criar um pedido usando o construtor")
-    public void shouldCreateOrderUsingConstructor() {
+    public void testShouldCreateOrderUsingConstructor() {
         Product product = createProduct("Product A", new BigDecimal("50.00"));
         OrderItem item = createOrderItem(product, 2);
 
@@ -57,7 +57,7 @@ public class OrderTest {
 
     @Test
     @DisplayName("Deve criar um pedido usando os setters")
-    public void shouldCreateOrderUsingSetters() {
+    public void testShouldCreateOrderUsingSetters() {
         Product product = createProduct("Product B", new BigDecimal("75.00"));
         OrderItem item = createOrderItem(product, 1);
 
@@ -87,7 +87,7 @@ public class OrderTest {
 
     @Test
     @DisplayName("Deve criar um pedido usando o método de fábrica")
-    public void shouldCreateOrderUsingFactory() {
+    public void testShouldCreateOrderUsingFactory() {
         Product product = createProduct("Product C", new BigDecimal("20.00"));
         OrderItem item = createOrderItem(product, 3);
 

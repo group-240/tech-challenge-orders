@@ -9,7 +9,7 @@ class NotFoundExceptionTest {
 
     @Test
     @DisplayName("Should create NotFoundException with message")
-    void shouldCreateNotFoundExceptionWithMessage() {
+    void testShouldCreateNotFoundExceptionWithMessage() {
         // Arrange
         String message = "Record not found";
 
@@ -23,7 +23,7 @@ class NotFoundExceptionTest {
 
     @Test
     @DisplayName("Should create NotFoundException with message and cause")
-    void shouldCreateNotFoundExceptionWithMessageAndCause() {
+    void testShouldCreateNotFoundExceptionWithMessageAndCause() {
         // Arrange
         String message = "Record not found";
         Throwable cause = new RuntimeException("Database error");

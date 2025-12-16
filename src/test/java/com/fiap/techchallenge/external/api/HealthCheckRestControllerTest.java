@@ -25,7 +25,7 @@ class HealthCheckRestControllerTest {
     }
 
     @Test
-    void healthCheck_Success() throws Exception {
+    void testHealthCheck_Success() throws Exception {
         // Act & Assert
         mockMvc.perform(get("/health"))
                 .andExpect(status().isOk())
@@ -37,7 +37,7 @@ class HealthCheckRestControllerTest {
     }
 
     @Test
-    void healthCheck_ReturnsCorrectStructure() throws Exception {
+    void testHealthCheck_ReturnsCorrectStructure() throws Exception {
         // Act & Assert
         mockMvc.perform(get("/health"))
                 .andExpect(status().isOk())
@@ -50,7 +50,7 @@ class HealthCheckRestControllerTest {
     }
 
     @Test
-    void healthCheck_StatusIsAlwaysUP() throws Exception {
+    void testHealthCheck_StatusIsAlwaysUP() throws Exception {
         // Act & Assert - Multiple calls should always return UP
         for (int i = 0; i < 3; i++) {
             mockMvc.perform(get("/health"))
@@ -60,7 +60,7 @@ class HealthCheckRestControllerTest {
     }
 
     @Test
-    void healthCheck_TimestampIsCurrentTime() throws Exception {
+    void testHealthCheck_TimestampIsCurrentTime() throws Exception {
         // Arrange
         long beforeCall = System.currentTimeMillis();
 
@@ -71,7 +71,7 @@ class HealthCheckRestControllerTest {
     }
 
     @Test
-    void healthCheck_ServiceNameIsCorrect() throws Exception {
+    void testHealthCheck_ServiceNameIsCorrect() throws Exception {
         // Act & Assert
         mockMvc.perform(get("/health"))
                 .andExpect(status().isOk())
@@ -79,7 +79,7 @@ class HealthCheckRestControllerTest {
     }
 
     @Test
-    void healthCheck_ResponseContainsAllRequiredFields() throws Exception {
+    void testHealthCheck_ResponseContainsAllRequiredFields() throws Exception {
         // Act & Assert
         mockMvc.perform(get("/health"))
                 .andExpect(status().isOk())

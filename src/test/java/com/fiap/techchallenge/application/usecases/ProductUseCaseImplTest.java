@@ -63,7 +63,7 @@ class ProductUseCaseImplTest {
 
     @Test
     @DisplayName("Should create a product successfully")
-    void shouldCreateProductSuccessfully() {
+    void testShouldCreateProductSuccessfully() {
         // Arrange
         when(categoryRepository.findById(categoryId)).thenReturn(Optional.of(category));
         when(productRepository.save(any(Product.class))).thenReturn(product);
@@ -80,7 +80,7 @@ class ProductUseCaseImplTest {
 
     @Test
     @DisplayName("Should throw NotFoundException when category is not found during product creation")
-    void shouldThrowNotFoundExceptionWhenCategoryNotFound() {
+    void testShouldThrowNotFoundExceptionWhenCategoryNotFound() {
         // Arrange
         when(categoryRepository.findById(categoryId)).thenReturn(Optional.empty());
 
@@ -94,7 +94,7 @@ class ProductUseCaseImplTest {
 
     @Test
     @DisplayName("Should find product by ID successfully")
-    void shouldFindProductByIdSuccessfully() {
+    void testShouldFindProductByIdSuccessfully() {
         // Arrange
         when(productRepository.findById(productId)).thenReturn(Optional.of(product));
 
@@ -109,7 +109,7 @@ class ProductUseCaseImplTest {
 
     @Test
     @DisplayName("Should throw NotFoundException when product is not found by ID")
-    void shouldThrowNotFoundExceptionWhenProductNotFoundById() {
+    void testShouldThrowNotFoundExceptionWhenProductNotFoundById() {
         // Arrange
         when(productRepository.findById(productId)).thenReturn(Optional.empty());
 
@@ -123,7 +123,7 @@ class ProductUseCaseImplTest {
 
     @Test
     @DisplayName("Should update product successfully")
-    void shouldUpdateProductSuccessfully() {
+    void testShouldUpdateProductSuccessfully() {
         // Arrange
         when(productRepository.findById(productId)).thenReturn(Optional.of(product));
         when(categoryRepository.findById(categoryId)).thenReturn(Optional.of(category));
@@ -151,7 +151,7 @@ class ProductUseCaseImplTest {
 
     @Test
     @DisplayName("Should update product with null category successfully")
-    void shouldUpdateProductWithNullCategorySuccessfully() {
+    void testShouldUpdateProductWithNullCategorySuccessfully() {
         // Arrange
         when(productRepository.findById(productId)).thenReturn(Optional.of(product));
         when(productRepository.save(any(Product.class)))
@@ -179,7 +179,7 @@ class ProductUseCaseImplTest {
 
     @Test
     @DisplayName("Should throw NotFoundException when updating a product that does not exist")
-    void shouldThrowNotFoundExceptionWhenUpdatingNonExistentProduct() {
+    void testShouldThrowNotFoundExceptionWhenUpdatingNonExistentProduct() {
         // Arrange
         when(productRepository.findById(productId)).thenReturn(Optional.empty());
 
@@ -193,7 +193,7 @@ class ProductUseCaseImplTest {
 
     @Test
     @DisplayName("Should delete product successfully")
-    void shouldDeleteProductSuccessfully() {
+    void testShouldDeleteProductSuccessfully() {
         // Arrange
         when(productRepository.findById(productId)).thenReturn(Optional.of(product));
         when(orderRepository.existsByProductId(productId)).thenReturn(false);
@@ -209,7 +209,7 @@ class ProductUseCaseImplTest {
 
     @Test
     @DisplayName("Should throw NotFoundException when deleting a product that does not exist")
-    void shouldThrowNotFoundExceptionWhenDeletingNonExistentProduct() {
+    void testShouldThrowNotFoundExceptionWhenDeletingNonExistentProduct() {
         // Arrange
         when(productRepository.findById(productId)).thenReturn(Optional.empty());
 
@@ -223,7 +223,7 @@ class ProductUseCaseImplTest {
 
     @Test
     @DisplayName("Should throw ProductLinkedToOrderException when deleting a product linked to an order")
-    void shouldThrowProductLinkedToOrderExceptionWhenDeletingLinkedProduct() {
+    void testShouldThrowProductLinkedToOrderExceptionWhenDeletingLinkedProduct() {
         // Arrange
         when(productRepository.findById(productId)).thenReturn(Optional.of(product));
         when(orderRepository.existsByProductId(productId)).thenReturn(true);

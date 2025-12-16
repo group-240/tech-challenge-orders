@@ -25,7 +25,7 @@ class GlobalExceptionHandlerTest {
 
     @Test
     @DisplayName("Should handle DomainException")
-    void shouldHandleDomainException() {
+    void testShouldHandleDomainException() {
         // Arrange
         DomainException exception = new DomainException("Domain error occurred");
 
@@ -45,7 +45,7 @@ class GlobalExceptionHandlerTest {
 
     @Test
     @DisplayName("Should handle InvalidCpfException")
-    void shouldHandleInvalidCpfException() {
+    void testShouldHandleInvalidCpfException() {
         // Arrange
         InvalidCpfException exception = new InvalidCpfException("Invalid CPF format");
 
@@ -65,7 +65,7 @@ class GlobalExceptionHandlerTest {
 
     @Test
     @DisplayName("Should handle InvalidEmailException")
-    void shouldHandleInvalidEmailException() {
+    void testShouldHandleInvalidEmailException() {
         // Arrange
         InvalidEmailException exception = new InvalidEmailException("Invalid email format");
 
@@ -85,7 +85,7 @@ class GlobalExceptionHandlerTest {
 
     @Test
     @DisplayName("Should handle ProductLinkedToOrderException")
-    void shouldHandleProductLinkedToOrderException() {
+    void testShouldHandleProductLinkedToOrderException() {
         // Arrange
         ProductLinkedToOrderException exception = new ProductLinkedToOrderException("Product is linked to orders");
 

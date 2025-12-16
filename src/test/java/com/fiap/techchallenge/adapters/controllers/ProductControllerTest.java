@@ -49,7 +49,7 @@ class ProductControllerTest {
 
     @Test
     @DisplayName("Should create product successfully")
-    void shouldCreateProductSuccessfully() {
+    void testShouldCreateProductSuccessfully() {
         // Arrange
         String name = "Laptop";
         String description = "Gaming laptop";
@@ -67,7 +67,7 @@ class ProductControllerTest {
 
     @Test
     @DisplayName("Should find product by id successfully")
-    void shouldFindProductByIdSuccessfully() {
+    void testShouldFindProductByIdSuccessfully() {
         // Arrange
         when(productUseCase.findProductById(productId)).thenReturn(Optional.of(product));
 
@@ -82,7 +82,7 @@ class ProductControllerTest {
 
     @Test
     @DisplayName("Should find products by name successfully")
-    void shouldFindProductsByNameSuccessfully() {
+    void testShouldFindProductsByNameSuccessfully() {
         // Arrange
         String name = "Laptop";
         List<Product> products = List.of(product);
@@ -99,7 +99,7 @@ class ProductControllerTest {
 
     @Test
     @DisplayName("Should find all products successfully")
-    void shouldFindAllProductsSuccessfully() {
+    void testShouldFindAllProductsSuccessfully() {
         // Arrange
         List<Product> products = List.of(product);
         when(productUseCase.findAllProducts()).thenReturn(products);
@@ -115,7 +115,7 @@ class ProductControllerTest {
 
     @Test
     @DisplayName("Should find products by category successfully")
-    void shouldFindProductsByCategorySuccessfully() {
+    void testShouldFindProductsByCategorySuccessfully() {
         // Arrange
         List<Product> products = List.of(product);
         when(productUseCase.findProductsByCategory(categoryId)).thenReturn(products);
@@ -131,7 +131,7 @@ class ProductControllerTest {
 
     @Test
     @DisplayName("Should update product successfully")
-    void shouldUpdateProductSuccessfully() {
+    void testShouldUpdateProductSuccessfully() {
         // Arrange
         String newName = "Updated Laptop";
         String newDescription = "Updated description";
@@ -159,7 +159,7 @@ class ProductControllerTest {
 
     @Test
     @DisplayName("Should delete product successfully")
-    void shouldDeleteProductSuccessfully() {
+    void testShouldDeleteProductSuccessfully() {
         // Arrange
         doNothing().when(productUseCase).deleteProduct(productId);
 

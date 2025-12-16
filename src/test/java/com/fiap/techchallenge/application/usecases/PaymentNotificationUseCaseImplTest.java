@@ -21,7 +21,7 @@ class PaymentNotificationUseCaseImplTest {
 
     @Test
     @DisplayName("Should handle payment notification successfully")
-    void shouldHandlePaymentNotificationSuccessfully() {
+    void testShouldHandlePaymentNotificationSuccessfully() {
         // Arrange
         Long paymentId = 123L;
 
@@ -34,7 +34,7 @@ class PaymentNotificationUseCaseImplTest {
 
     @Test
     @DisplayName("Should handle exception silently during payment notification")
-    void shouldHandleExceptionSilentlyDuringPaymentNotification() {
+    void testShouldHandleExceptionSilentlyDuringPaymentNotification() {
         // Arrange
         Long paymentId = 123L;
         doThrow(new RuntimeException("Order not found"))

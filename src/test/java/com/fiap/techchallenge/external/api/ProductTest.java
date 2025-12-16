@@ -14,7 +14,7 @@ public class ProductTest {
 
     @Test
     @DisplayName("Deve criar um produto usando o construtor")
-    public void shouldCreateProductUsingConstructor() {
+    public void testShouldCreateProductUsingConstructor() {
         UUID id = UUID.randomUUID();
         Category category = new Category(UUID.randomUUID(), "Electronics");
         String name = "Laptop";
@@ -34,7 +34,7 @@ public class ProductTest {
 
     @Test
     @DisplayName("Deve criar um produto usando os setters")
-    public void shouldCreateProductUsingSetters() {
+    public void testShouldCreateProductUsingSetters() {
         UUID id = UUID.randomUUID();
         Category category = new Category(UUID.randomUUID(), "Books");
         String name = "Book";
@@ -60,7 +60,7 @@ public class ProductTest {
 
     @Test
     @DisplayName("Deve criar um produto usando o Builder")
-    public void shouldCreateProductUsingBuilder() {
+    public void testShouldCreateProductUsingBuilder() {
         UUID id = UUID.randomUUID();
         Category category = new Category(UUID.randomUUID(), "Clothing");
         String name = "T-Shirt";
@@ -87,7 +87,7 @@ public class ProductTest {
 
     @Test
     @DisplayName("Deve ativar um produto")
-    public void shouldActivateProduct() {
+    public void testShouldActivateProduct() {
         Product product = Product.builder().active(false).build();
         Product activated = product.activate();
         assertTrue(activated.isActive());
@@ -95,7 +95,7 @@ public class ProductTest {
 
     @Test
     @DisplayName("Deve desativar um produto")
-    public void shouldDeactivateProduct() {
+    public void testShouldDeactivateProduct() {
         Product product = Product.builder().active(true).build();
         Product deactivated = product.deactivate();
         assertFalse(deactivated.isActive());
@@ -103,7 +103,7 @@ public class ProductTest {
 
     @Test
     @DisplayName("Deve atualizar um produto")
-    public void shouldUpdateProduct() {
+    public void testShouldUpdateProduct() {
         Category oldCategory = new Category(UUID.randomUUID(), "Old");
         Category newCategory = new Category(UUID.randomUUID(), "New");
 
@@ -126,7 +126,7 @@ public class ProductTest {
 
     @Test
     @DisplayName("Deve atualizar apenas os campos fornecidos")
-    public void shouldUpdateOnlyProvidedFields() {
+    public void testShouldUpdateOnlyProvidedFields() {
         UUID id = UUID.randomUUID();
         Product product = new Product(id, "Old Name", "Old Desc", BigDecimal.valueOf(100), new Category(UUID.randomUUID(), "Books"), true);
 

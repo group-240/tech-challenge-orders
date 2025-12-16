@@ -13,7 +13,7 @@ class CategoryMapperTest {
 
     @Test
     @DisplayName("Should map Category to CategoryJpaEntity")
-    void shouldMapCategoryToCategoryJpaEntity() {
+    void testShouldMapCategoryToCategoryJpaEntity() {
         // Arrange
         UUID id = UUID.randomUUID();
         Category category = new Category(id, "Electronics");
@@ -29,7 +29,7 @@ class CategoryMapperTest {
 
     @Test
     @DisplayName("Should map CategoryJpaEntity to Category")
-    void shouldMapCategoryJpaEntityToCategory() {
+    void testShouldMapCategoryJpaEntityToCategory() {
         // Arrange
         UUID id = UUID.randomUUID();
         CategoryJpaEntity jpaEntity = new CategoryJpaEntity(id, "Books");
@@ -45,7 +45,7 @@ class CategoryMapperTest {
 
     @Test
     @DisplayName("Should handle null Category in toJpaEntity")
-    void shouldHandleNullCategoryInToJpaEntity() {
+    void testShouldHandleNullCategoryInToJpaEntity() {
         // Act
         CategoryJpaEntity result = CategoryMapper.toJpaEntity(null);
 
@@ -55,7 +55,7 @@ class CategoryMapperTest {
 
     @Test
     @DisplayName("Should handle null CategoryJpaEntity in toDomainEntity")
-    void shouldHandleNullCategoryJpaEntityInToDomainEntity() {
+    void testShouldHandleNullCategoryJpaEntityInToDomainEntity() {
         // Act
         Category result = CategoryMapper.toDomainEntity(null);
 

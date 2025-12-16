@@ -15,7 +15,7 @@ public class OrderItemTest {
 
     @Test
     @DisplayName("Deve criar um OrderItem usando o construtor")
-    public void shouldCreateOrderItemUsingConstructor() {
+    public void testShouldCreateOrderItemUsingConstructor() {
         UUID productId = UUID.randomUUID();
         Category category = new Category(UUID.randomUUID(), "Electronics");
         Product product = new Product(productId, "Laptop", "High-end laptop", new BigDecimal("3500.00"), category, true);
@@ -37,7 +37,7 @@ public class OrderItemTest {
 
     @Test
     @DisplayName("Deve criar um OrderItem usando os setters")
-    public void shouldCreateOrderItemUsingSetters() {
+    public void testShouldCreateOrderItemUsingSetters() {
         UUID productId = UUID.randomUUID();
         Category category = new Category(UUID.randomUUID(), "Books");
         Product product = new Product(productId, "Book", "A great book", new BigDecimal("120.00"), category, true);
@@ -65,7 +65,7 @@ public class OrderItemTest {
 
     @Test
     @DisplayName("Deve criar um OrderItem usando o método de fábrica")
-    public void shouldCreateOrderItemUsingFactoryMethod() {
+    public void testShouldCreateOrderItemUsingFactoryMethod() {
         Category category = new Category(UUID.randomUUID(), "Clothing");
         Product product = new Product(UUID.randomUUID(), "T-Shirt", "Cotton T-Shirt", new BigDecimal("80.00"), category, true);
 

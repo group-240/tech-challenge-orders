@@ -45,7 +45,7 @@ class OrderRestControllerTest {
     }
 
     @Test
-    void createOrder_Success() throws Exception {
+    void testCreateOrderSuccess() throws Exception {
         // Arrange
         OrderRestController.OrderRequestDTO requestDTO = new OrderRestController.OrderRequestDTO();
         requestDTO.setCpf("12345678901");
@@ -71,7 +71,7 @@ class OrderRestControllerTest {
     }
 
     @Test
-    void findOrderById_Success() throws Exception {
+    void testFindOrderByIdSuccess() throws Exception {
         // Arrange
         Order mockOrder = new Order();
         mockOrder.setId(1L);
@@ -87,7 +87,7 @@ class OrderRestControllerTest {
     }
 
     @Test
-    void findOrderById_NotFound() throws Exception {
+    void testFindOrderByIdNotFound() throws Exception {
         // Arrange
         when(orderController.findOrderById(1L)).thenReturn(Optional.empty());
 
@@ -97,7 +97,7 @@ class OrderRestControllerTest {
     }
 
     @Test
-    void findByOptionalStatus_WithStatus() throws Exception {
+    void testFindByOptionalStatusWithStatus() throws Exception {
         // Arrange
         Order order1 = new Order();
         order1.setId(1L);
@@ -122,7 +122,7 @@ class OrderRestControllerTest {
     }
 
     @Test
-    void findByOptionalStatus_WithoutStatus() throws Exception {
+    void testFindByOptionalStatusWithoutStatus() throws Exception {
         // Arrange
         Order order1 = new Order();
         order1.setId(1L);
@@ -140,7 +140,7 @@ class OrderRestControllerTest {
     }
 
     @Test
-    void updateOrderStatus_Success() throws Exception {
+    void testUpdateOrderStatusSuccess() throws Exception {
         // Arrange
         OrderRestController.OrderStatusUpdateDTO updateDTO = new OrderRestController.OrderStatusUpdateDTO();
         updateDTO.setStatus(OrderStatus.READY);
@@ -161,7 +161,7 @@ class OrderRestControllerTest {
     }
 
     @Test
-    void updateOrderStatusToPreparation_Success() throws Exception {
+    void testUpdateOrderStatusToPreparationSuccess() throws Exception {
         // Arrange
         Order updatedOrder = new Order();
         updatedOrder.setId(1L);
@@ -177,7 +177,7 @@ class OrderRestControllerTest {
     }
 
     @Test
-    void updateOrderStatusPayment_Success() throws Exception {
+    void testUpdateOrderStatusPaymentSuccess() throws Exception {
         // Arrange
         OrderRestController.PaymentStatusUpdateDTO paymentUpdateDTO = new OrderRestController.PaymentStatusUpdateDTO();
         paymentUpdateDTO.setStatusPayment(StatusPayment.APROVADO);
@@ -198,7 +198,7 @@ class OrderRestControllerTest {
     }
 
     @Test
-    void testOrderRequestDTO_GettersAndSetters() {
+    void testOrderRequestDTOGettersAndSetters() {
         // Arrange
         OrderRestController.OrderRequestDTO dto = new OrderRestController.OrderRequestDTO();
         OrderItemRequest item = new OrderItemRequest();
@@ -217,7 +217,7 @@ class OrderRestControllerTest {
     }
 
     @Test
-    void testOrderStatusUpdateDTO_GettersAndSetters() {
+    void testOrderStatusUpdateDTOGettersAndSetters() {
         // Arrange
         OrderRestController.OrderStatusUpdateDTO dto = new OrderRestController.OrderStatusUpdateDTO();
 
@@ -229,7 +229,7 @@ class OrderRestControllerTest {
     }
 
     @Test
-    void testPaymentStatusUpdateDTO_GettersAndSetters() {
+    void testPaymentStatusUpdateDTOGettersAndSetters() {
         // Arrange
         OrderRestController.PaymentStatusUpdateDTO dto = new OrderRestController.PaymentStatusUpdateDTO();
 

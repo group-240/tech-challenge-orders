@@ -55,7 +55,7 @@ class OrderControllerTest {
 
     @Test
     @DisplayName("Should create order successfully")
-    void shouldCreateOrderSuccessfully() {
+    void testShouldCreateOrderSuccessfully() {
         // Arrange
         String cpf = "12345678900";
         List<OrderItemRequest> items = List.of(orderItemRequest);
@@ -71,7 +71,7 @@ class OrderControllerTest {
 
     @Test
     @DisplayName("Should find order by id successfully")
-    void shouldFindOrderByIdSuccessfully() {
+    void testShouldFindOrderByIdSuccessfully() {
         // Arrange
         Long orderId = 1L;
         when(orderUseCase.findOrderById(orderId)).thenReturn(Optional.of(order));
@@ -87,7 +87,7 @@ class OrderControllerTest {
 
     @Test
     @DisplayName("Should find orders by status successfully")
-    void shouldFindOrdersByStatusSuccessfully() {
+    void testShouldFindOrdersByStatusSuccessfully() {
         // Arrange
         OrderStatus status = OrderStatus.RECEIVED;
         List<Order> orders = List.of(order);
@@ -104,7 +104,7 @@ class OrderControllerTest {
 
     @Test
     @DisplayName("Should update order status successfully")
-    void shouldUpdateOrderStatusSuccessfully() {
+    void testShouldUpdateOrderStatusSuccessfully() {
         // Arrange
         Long orderId = 1L;
         OrderStatus newStatus = OrderStatus.IN_PREPARATION;
@@ -120,7 +120,7 @@ class OrderControllerTest {
 
     @Test
     @DisplayName("Should update order status to preparation successfully")
-    void shouldUpdateOrderStatusToPreparationSuccessfully() {
+    void testShouldUpdateOrderStatusToPreparationSuccessfully() {
         // Arrange
         Long orderId = 1L;
         when(orderUseCase.updateOrderStatus(orderId)).thenReturn(order);
@@ -135,7 +135,7 @@ class OrderControllerTest {
 
     @Test
     @DisplayName("Should update order payment status successfully")
-    void shouldUpdateOrderPaymentStatusSuccessfully() {
+    void testShouldUpdateOrderPaymentStatusSuccessfully() {
         // Arrange
         Long orderId = 1L;
         StatusPayment newStatus = StatusPayment.APROVADO;

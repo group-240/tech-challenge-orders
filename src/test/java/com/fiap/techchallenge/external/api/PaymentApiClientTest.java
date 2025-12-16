@@ -1,5 +1,6 @@
 package com.fiap.techchallenge.external.api;
 
+import com.fiap.techchallenge.config.TestConfig;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -9,9 +10,9 @@ class PaymentApiClientTest {
 
     @Test
     @DisplayName("Should create PaymentApiClient with base URL")
-    void shouldCreatePaymentApiClientWithBaseUrl() {
+    void testShouldCreatePaymentApiClientWithBaseUrl() {
         // Act
-        PaymentApiClient client = new PaymentApiClient("http://localhost:9090");
+        PaymentApiClient client = new PaymentApiClient(TestConfig.getPaymentApiUrl());
 
         // Assert
         assertNotNull(client);
@@ -19,14 +20,14 @@ class PaymentApiClientTest {
 
     @Test
     @DisplayName("Should throw exception when API call fails with invalid host")
-    void shouldThrowExceptionWhenApiCallFails() {
+    void testShouldThrowExceptionWhenApiCallFails() {
         // Arrange - usar URL inválida para forçar erro
-        PaymentApiClient client = new PaymentApiClient("http://invalid-url-that-does-not-exist-12345.test");
+        PaymentApiClient client = new PaymentApiClient(TestConfig.INVALID_URL);
 
         // Act & Assert
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             client.createPayment(100.0, "Test payment", "pix", 1,
-                    "test@test.com", "CPF", "12345678900");
+                    TestConfig.TEST_EMAIL, "CPF", TestConfig.TEST_CPF);
         });
 
         // Verifica que a exceção contém a mensagem esperada
@@ -35,14 +36,14 @@ class PaymentApiClientTest {
 
     @Test
     @DisplayName("Should throw exception with invalid URL format")
-    void shouldThrowExceptionWithInvalidUrlFormat() {
+    void testShouldThrowExceptionWithInvalidUrlFormat() {
         // Arrange
-        PaymentApiClient client = new PaymentApiClient("invalid-url");
+        PaymentApiClient client = new PaymentApiClient(TestConfig.INVALID_URL);
 
         // Act & Assert
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             client.createPayment(100.0, "Test", "pix", 1,
-                    "test@test.com", "CPF", "12345678900");
+                    TestConfig.TEST_EMAIL, "CPF", TestConfig.TEST_CPF);
         });
         
         assertNotNull(exception.getMessage());
@@ -51,9 +52,9 @@ class PaymentApiClientTest {
 
     @Test
     @DisplayName("Should handle null values in createPayment")
-    void shouldHandleNullValuesInCreatePayment() {
+    void testShouldHandleNullValuesInCreatePayment() {
         // Arrange
-        PaymentApiClient client = new PaymentApiClient("http://localhost:9090");
+        PaymentApiClient client = new PaymentApiClient(TestConfig.getPaymentApiUrl());
 
         // Act & Assert - null values will cause issues in String.format
         assertThrows(Exception.class, () -> {
@@ -63,14 +64,14 @@ class PaymentApiClientTest {
 
     @Test
     @DisplayName("Should throw exception when connection fails (connection refused)")
-    void shouldThrowExceptionWhenConnectionRefused() {
+    void testShouldThrowExceptionWhenConnectionRefused() {
         // Arrange - porta que provavelmente não está em uso
-        PaymentApiClient client = new PaymentApiClient("http://localhost:59999");
+        PaymentApiClient client = new PaymentApiClient(TestConfig.getPaymentApiUrl(TestConfig.PAYMENT_API_PORT_INVALID));
 
         // Act & Assert
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             client.createPayment(100.0, "Test", "pix", 1,
-                    "test@test.com", "CPF", "12345678900");
+                    TestConfig.TEST_EMAIL, "CPF", TestConfig.TEST_CPF);
         });
 
         // Verifica que o erro foi encapsulado corretamente
@@ -81,9 +82,9 @@ class PaymentApiClientTest {
 
     @Test
     @DisplayName("Should format JSON payload correctly")
-    void shouldFormatJsonPayloadCorrectly() {
+    void testShouldFormatJsonPayloadCorrectly() {
         // Arrange
-        PaymentApiClient client = new PaymentApiClient("http://localhost:59998");
+        PaymentApiClient client = new PaymentApiClient(TestConfig.getPaymentApiUrl(TestConfig.PAYMENT_API_PORT_NULL_VALUES));
 
         // Act & Assert - mesmo que falhe a conexão, o payload deve ser formatado
         // Este teste verifica se a lógica de formatação não lança exceção antes da conexão
@@ -105,9 +106,9 @@ class PaymentApiClientTest {
 
     @Test
     @DisplayName("Should handle special characters in description")
-    void shouldHandleSpecialCharactersInDescription() {
+    void testShouldHandleSpecialCharactersInDescription() {
         // Arrange
-        PaymentApiClient client = new PaymentApiClient("http://localhost:59997");
+        PaymentApiClient client = new PaymentApiClient(TestConfig.getPaymentApiUrl(TestConfig.PAYMENT_API_PORT_JSON_FORMAT));
 
         // Act & Assert
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
@@ -116,9 +117,9 @@ class PaymentApiClientTest {
                     "Teste com caracteres especiais",
                     "pix",
                     1,
-                    "test@test.com",
+                    TestConfig.TEST_EMAIL,
                     "CPF",
-                    "12345678900"
+                    TestConfig.TEST_CPF
             );
         });
 
@@ -128,23 +129,23 @@ class PaymentApiClientTest {
 
     @Test
     @DisplayName("Should handle different installment values")
-    void shouldHandleDifferentInstallmentValues() {
+    void testShouldHandleDifferentInstallmentValues() {
         // Arrange
-        PaymentApiClient client = new PaymentApiClient("http://localhost:59996");
+        PaymentApiClient client = new PaymentApiClient(TestConfig.getPaymentApiUrl(TestConfig.PAYMENT_API_PORT_SPECIAL_CHARS));
 
         // Act & Assert - Testa com múltiplas parcelas
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             client.createPayment(1200.0, "Test", "credit_card", 12,
-                    "test@test.com", "CPF", "12345678900");
+                    TestConfig.TEST_EMAIL, "CPF", TestConfig.TEST_CPF);
         });
         assertTrue(exception.getMessage().contains("Erro ao chamar API de pagamento"));
     }
 
     @Test
     @DisplayName("Should handle different amount formats")
-    void shouldHandleDifferentAmountFormats() {
+    void testShouldHandleDifferentAmountFormats() {
         // Arrange
-        PaymentApiClient client = new PaymentApiClient("http://localhost:59995");
+        PaymentApiClient client = new PaymentApiClient(TestConfig.getPaymentApiUrl(TestConfig.PAYMENT_API_PORT_INSTALLMENTS));
 
         // Act & Assert - Testa valores decimais
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
@@ -153,9 +154,9 @@ class PaymentApiClientTest {
                     "Test decimal",
                     "pix",
                     1,
-                    "test@test.com",
+                    TestConfig.TEST_EMAIL,
                     "CPF",
-                    "12345678900"
+                    TestConfig.TEST_CPF
             );
         });
 

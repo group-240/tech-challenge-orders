@@ -21,7 +21,7 @@ class WebhookControllerTest {
 
     @Test
     @DisplayName("Should handle payment notification successfully")
-    void shouldHandlePaymentNotificationSuccessfully() {
+    void testShouldHandlePaymentNotificationSuccessfully() {
         // Arrange
         Long paymentId = 123L;
 
@@ -34,7 +34,7 @@ class WebhookControllerTest {
 
     @Test
     @DisplayName("Should handle null payment ID gracefully")
-    void shouldHandleNullPaymentIdGracefully() {
+    void testShouldHandleNullPaymentIdGracefully() {
         // Arrange
         Long paymentId = null;
 

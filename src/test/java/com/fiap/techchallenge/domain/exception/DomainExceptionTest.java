@@ -9,7 +9,7 @@ class DomainExceptionTest {
 
     @Test
     @DisplayName("Should create DomainException with message")
-    void shouldCreateDomainExceptionWithMessage() {
+    void testShouldCreateDomainExceptionWithMessage() {
         // Arrange
         String message = "Test domain exception";
 
@@ -23,7 +23,7 @@ class DomainExceptionTest {
 
     @Test
     @DisplayName("Should create DomainException with message and cause")
-    void shouldCreateDomainExceptionWithMessageAndCause() {
+    void testShouldCreateDomainExceptionWithMessageAndCause() {
         // Arrange
         String message = "Test domain exception";
         Throwable cause = new RuntimeException("Root cause");

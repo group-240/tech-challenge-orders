@@ -72,7 +72,7 @@ class OrderMapperTest {
 
     @Test
     @DisplayName("Should map Order to OrderJpaEntity")
-    void shouldMapOrderToOrderJpaEntity() {
+    void testShouldMapOrderToOrderJpaEntity() {
         // Act
         OrderJpaEntity result = OrderMapper.toJpaEntity(order);
 
@@ -99,7 +99,7 @@ class OrderMapperTest {
 
     @Test
     @DisplayName("Should map OrderJpaEntity to Order")
-    void shouldMapOrderJpaEntityToOrder() {
+    void testShouldMapOrderJpaEntityToOrder() {
         // Act
         Order result = OrderMapper.toDomainEntity(orderJpaEntity);
 
@@ -126,7 +126,7 @@ class OrderMapperTest {
 
     @Test
     @DisplayName("Should handle null Order in toJpaEntity")
-    void shouldHandleNullOrderInToJpaEntity() {
+    void testShouldHandleNullOrderInToJpaEntity() {
         // Act
         OrderJpaEntity result = OrderMapper.toJpaEntity(null);
 
@@ -136,7 +136,7 @@ class OrderMapperTest {
 
     @Test
     @DisplayName("Should handle null OrderJpaEntity in toDomainEntity")
-    void shouldHandleNullOrderJpaEntityInToDomainEntity() {
+    void testShouldHandleNullOrderJpaEntityInToDomainEntity() {
         // Act
         Order result = OrderMapper.toDomainEntity(null);
 
@@ -146,7 +146,7 @@ class OrderMapperTest {
 
     @Test
     @DisplayName("Should handle Order with null items")
-    void shouldHandleOrderWithNullItems() {
+    void testShouldHandleOrderWithNullItems() {
         // Arrange
         Order orderWithNullItems = new Order(1L, "12345678900", null, BigDecimal.valueOf(1000.00), 
                 OrderStatus.RECEIVED, StatusPayment.AGUARDANDO_PAGAMENTO, 123L, 
@@ -164,7 +164,7 @@ class OrderMapperTest {
 
     @Test
     @DisplayName("Should handle OrderJpaEntity with null items")
-    void shouldHandleOrderJpaEntityWithNullItems() {
+    void testShouldHandleOrderJpaEntityWithNullItems() {
         // Arrange
         OrderJpaEntity jpaWithNullItems = new OrderJpaEntity();
         jpaWithNullItems.setId(1L);
@@ -189,7 +189,7 @@ class OrderMapperTest {
 
     @Test
     @DisplayName("Should map all order statuses correctly")
-    void shouldMapAllOrderStatusesCorrectly() {
+    void testShouldMapAllOrderStatusesCorrectly() {
         // Test RECEIVED
         Order receivedOrder = new Order(1L, "12345678900", List.of(), BigDecimal.valueOf(100.00), 
                 OrderStatus.RECEIVED, StatusPayment.AGUARDANDO_PAGAMENTO, 123L, 
@@ -237,7 +237,7 @@ class OrderMapperTest {
 
     @Test
     @DisplayName("Should map all payment statuses correctly")
-    void shouldMapAllPaymentStatusesCorrectly() {
+    void testShouldMapAllPaymentStatusesCorrectly() {
         // Test AGUARDANDO_PAGAMENTO
         Order aguardandoOrder = new Order(1L, "12345678900", List.of(), BigDecimal.valueOf(100.00), 
                 OrderStatus.RECEIVED, StatusPayment.AGUARDANDO_PAGAMENTO, 123L, 
@@ -274,7 +274,7 @@ class OrderMapperTest {
 
     @Test
     @DisplayName("Should handle null statuses in mapping")
-    void shouldHandleNullStatusesInMapping() {
+    void testShouldHandleNullStatusesInMapping() {
         // Test with null order status
         Order orderWithNullStatus = new Order(1L, "12345678900", List.of(), BigDecimal.valueOf(100.00), 
                 null, StatusPayment.AGUARDANDO_PAGAMENTO, 123L, 
@@ -294,7 +294,7 @@ class OrderMapperTest {
 
     @Test
     @DisplayName("Should handle OrderItem with null product")
-    void shouldHandleOrderItemWithNullProduct() {
+    void testShouldHandleOrderItemWithNullProduct() {
         // Arrange
         UUID orderItemId = UUID.randomUUID();
         UUID productId = UUID.randomUUID();
@@ -322,7 +322,7 @@ class OrderMapperTest {
 
     @Test
     @DisplayName("Should handle OrderItemJpaEntity with null product")
-    void shouldHandleOrderItemJpaEntityWithNullProduct() {
+    void testShouldHandleOrderItemJpaEntityWithNullProduct() {
         // Arrange
         UUID orderItemId = UUID.randomUUID();
         UUID productId = UUID.randomUUID();

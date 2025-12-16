@@ -1,5 +1,6 @@
 package com.fiap.techchallenge.external.datasource.mercadopago;
 
+import com.fiap.techchallenge.config.TestConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,17 +25,15 @@ class MercadoPagoClientImplTest {
     @InjectMocks
     private MercadoPagoClientImpl mercadoPagoClient;
 
-    private String mockAccessToken = "TEST-123456";
-
     @BeforeEach
     void setUp() {
-        ReflectionTestUtils.setField(mercadoPagoClient, "accessToken", mockAccessToken);
+        ReflectionTestUtils.setField(mercadoPagoClient, "accessToken", TestConfig.getMercadoPagoAccessToken());
         ReflectionTestUtils.setField(mercadoPagoClient, "restTemplate", restTemplate);
     }
 
     @Test
     @DisplayName("Should create payment order successfully")
-    void shouldCreatePaymentOrderSuccessfully() {
+    void testShouldCreatePaymentOrderSuccessfully() {
         // Arrange
         Double amount = 100.0;
         String description = "Test payment";
@@ -62,7 +61,7 @@ class MercadoPagoClientImplTest {
 
     @Test
     @DisplayName("Should handle exception during payment creation")
-    void shouldHandleExceptionDuringPaymentCreation() {
+    void testShouldHandleExceptionDuringPaymentCreation() {
         // Arrange
         Double amount = 100.0;
         String description = "Test payment";
@@ -87,7 +86,7 @@ class MercadoPagoClientImplTest {
 
     @Test
     @DisplayName("Should create payment order with minimal parameters")
-    void shouldCreatePaymentOrderWithMinimalParameters() {
+    void testShouldCreatePaymentOrderWithMinimalParameters() {
         // Arrange
         Double amount = 50.0;
         String description = "Minimal payment";

@@ -66,7 +66,7 @@ class OrderRepositoryGatewayTest {
 
     @Test
     @DisplayName("Should save order successfully")
-    void shouldSaveOrderSuccessfully() {
+    void testShouldSaveOrderSuccessfully() {
         // Arrange
         when(orderJpaRepository.save(any(OrderJpaEntity.class))).thenReturn(orderJpaEntity);
 
@@ -82,7 +82,7 @@ class OrderRepositoryGatewayTest {
 
     @Test
     @DisplayName("Should find order by id successfully")
-    void shouldFindOrderByIdSuccessfully() {
+    void testShouldFindOrderByIdSuccessfully() {
         // Arrange
         when(orderJpaRepository.findById(1L)).thenReturn(Optional.of(orderJpaEntity));
 
@@ -97,7 +97,7 @@ class OrderRepositoryGatewayTest {
 
     @Test
     @DisplayName("Should return empty when order not found by id")
-    void shouldReturnEmptyWhenOrderNotFoundById() {
+    void testShouldReturnEmptyWhenOrderNotFoundById() {
         // Arrange
         when(orderJpaRepository.findById(1L)).thenReturn(Optional.empty());
 
@@ -111,7 +111,7 @@ class OrderRepositoryGatewayTest {
 
     @Test
     @DisplayName("Should find order by payment id successfully")
-    void shouldFindOrderByPaymentIdSuccessfully() {
+    void testShouldFindOrderByPaymentIdSuccessfully() {
         // Arrange
         when(orderJpaRepository.findByIdPayment(123L)).thenReturn(Optional.of(orderJpaEntity));
 
@@ -126,7 +126,7 @@ class OrderRepositoryGatewayTest {
 
     @Test
     @DisplayName("Should find orders by status successfully")
-    void shouldFindOrdersByStatusSuccessfully() {
+    void testShouldFindOrdersByStatusSuccessfully() {
         // Arrange
         List<OrderJpaEntity> jpaEntities = List.of(orderJpaEntity);
         when(orderJpaRepository.findByOptionalStatus(OrderJpaEntity.OrderStatusJpa.RECEIVED))
@@ -143,7 +143,7 @@ class OrderRepositoryGatewayTest {
 
     @Test
     @DisplayName("Should find all orders when status is null")
-    void shouldFindAllOrdersWhenStatusIsNull() {
+    void testShouldFindAllOrdersWhenStatusIsNull() {
         // Arrange
         List<OrderJpaEntity> jpaEntities = List.of(orderJpaEntity);
         when(orderJpaRepository.findByOptionalStatus(null)).thenReturn(jpaEntities);
@@ -158,7 +158,7 @@ class OrderRepositoryGatewayTest {
 
     @Test
     @DisplayName("Should find all orders successfully")
-    void shouldFindAllOrdersSuccessfully() {
+    void testShouldFindAllOrdersSuccessfully() {
         // Arrange
         List<OrderJpaEntity> jpaEntities = List.of(orderJpaEntity);
         when(orderJpaRepository.findAll()).thenReturn(jpaEntities);
@@ -173,7 +173,7 @@ class OrderRepositoryGatewayTest {
 
     @Test
     @DisplayName("Should check if order exists by product id")
-    void shouldCheckIfOrderExistsByProductId() {
+    void testShouldCheckIfOrderExistsByProductId() {
         // Arrange
         UUID productId = UUID.randomUUID();
         when(orderJpaRepository.existsByItemsProductId(productId)).thenReturn(true);
@@ -188,7 +188,7 @@ class OrderRepositoryGatewayTest {
 
     @Test
     @DisplayName("Should return false when order does not exist by product id")
-    void shouldReturnFalseWhenOrderDoesNotExistByProductId() {
+    void testShouldReturnFalseWhenOrderDoesNotExistByProductId() {
         // Arrange
         UUID productId = UUID.randomUUID();
         when(orderJpaRepository.existsByItemsProductId(productId)).thenReturn(false);
@@ -203,7 +203,7 @@ class OrderRepositoryGatewayTest {
 
     @Test
     @DisplayName("Should find orders by IN_PREPARATION status")
-    void shouldFindOrdersByInPreparationStatus() {
+    void testShouldFindOrdersByInPreparationStatus() {
         // Arrange
         orderJpaEntity.setStatus(OrderJpaEntity.OrderStatusJpa.IN_PREPARATION);
         List<OrderJpaEntity> jpaEntities = List.of(orderJpaEntity);
@@ -220,7 +220,7 @@ class OrderRepositoryGatewayTest {
 
     @Test
     @DisplayName("Should find orders by READY status")
-    void shouldFindOrdersByReadyStatus() {
+    void testShouldFindOrdersByReadyStatus() {
         // Arrange
         orderJpaEntity.setStatus(OrderJpaEntity.OrderStatusJpa.READY);
         List<OrderJpaEntity> jpaEntities = List.of(orderJpaEntity);
@@ -237,7 +237,7 @@ class OrderRepositoryGatewayTest {
 
     @Test
     @DisplayName("Should find orders by FINISHED status")
-    void shouldFindOrdersByFinishedStatus() {
+    void testShouldFindOrdersByFinishedStatus() {
         // Arrange
         orderJpaEntity.setStatus(OrderJpaEntity.OrderStatusJpa.FINISHED);
         List<OrderJpaEntity> jpaEntities = List.of(orderJpaEntity);

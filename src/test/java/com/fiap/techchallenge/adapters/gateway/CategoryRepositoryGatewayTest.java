@@ -41,7 +41,7 @@ class CategoryRepositoryGatewayTest {
 
     @Test
     @DisplayName("Should save category successfully")
-    void shouldSaveCategorySuccessfully() {
+    void testShouldSaveCategorySuccessfully() {
         // Arrange
         when(categoryJpaRepository.save(any(CategoryJpaEntity.class))).thenReturn(categoryJpaEntity);
 
@@ -57,7 +57,7 @@ class CategoryRepositoryGatewayTest {
 
     @Test
     @DisplayName("Should find category by id successfully")
-    void shouldFindCategoryByIdSuccessfully() {
+    void testShouldFindCategoryByIdSuccessfully() {
         // Arrange
         when(categoryJpaRepository.findById(categoryId)).thenReturn(Optional.of(categoryJpaEntity));
 
@@ -73,7 +73,7 @@ class CategoryRepositoryGatewayTest {
 
     @Test
     @DisplayName("Should return empty when category not found by id")
-    void shouldReturnEmptyWhenCategoryNotFoundById() {
+    void testShouldReturnEmptyWhenCategoryNotFoundById() {
         // Arrange
         when(categoryJpaRepository.findById(categoryId)).thenReturn(Optional.empty());
 
@@ -87,7 +87,7 @@ class CategoryRepositoryGatewayTest {
 
     @Test
     @DisplayName("Should check if category exists by name")
-    void shouldCheckIfCategoryExistsByName() {
+    void testShouldCheckIfCategoryExistsByName() {
         // Arrange
         String categoryName = "Electronics";
         when(categoryJpaRepository.existsByName(categoryName)).thenReturn(true);
@@ -102,7 +102,7 @@ class CategoryRepositoryGatewayTest {
 
     @Test
     @DisplayName("Should find all categories successfully")
-    void shouldFindAllCategoriesSuccessfully() {
+    void testShouldFindAllCategoriesSuccessfully() {
         // Arrange
         List<CategoryJpaEntity> jpaEntities = List.of(categoryJpaEntity);
         when(categoryJpaRepository.findAll()).thenReturn(jpaEntities);
@@ -119,7 +119,7 @@ class CategoryRepositoryGatewayTest {
 
     @Test
     @DisplayName("Should delete category by id successfully")
-    void shouldDeleteCategoryByIdSuccessfully() {
+    void testShouldDeleteCategoryByIdSuccessfully() {
         // Arrange
         doNothing().when(categoryJpaRepository).deleteById(categoryId);
 

@@ -59,7 +59,7 @@ class ProductRepositoryGatewayTest {
 
     @Test
     @DisplayName("Should save product successfully")
-    void shouldSaveProductSuccessfully() {
+    void testShouldSaveProductSuccessfully() {
         // Arrange
         when(productJpaRepository.save(any(ProductJpaEntity.class))).thenReturn(productJpaEntity);
 
@@ -78,7 +78,7 @@ class ProductRepositoryGatewayTest {
 
     @Test
     @DisplayName("Should find product by id successfully")
-    void shouldFindProductByIdSuccessfully() {
+    void testShouldFindProductByIdSuccessfully() {
         // Arrange
         when(productJpaRepository.findById(productId)).thenReturn(Optional.of(productJpaEntity));
 
@@ -94,7 +94,7 @@ class ProductRepositoryGatewayTest {
 
     @Test
     @DisplayName("Should return empty when product not found by id")
-    void shouldReturnEmptyWhenProductNotFoundById() {
+    void testShouldReturnEmptyWhenProductNotFoundById() {
         // Arrange
         when(productJpaRepository.findById(productId)).thenReturn(Optional.empty());
 
@@ -108,7 +108,7 @@ class ProductRepositoryGatewayTest {
 
     @Test
     @DisplayName("Should find products by name successfully")
-    void shouldFindProductsByNameSuccessfully() {
+    void testShouldFindProductsByNameSuccessfully() {
         // Arrange
         String name = "Laptop";
         List<ProductJpaEntity> jpaEntities = List.of(productJpaEntity);
@@ -126,7 +126,7 @@ class ProductRepositoryGatewayTest {
 
     @Test
     @DisplayName("Should find products by category id successfully")
-    void shouldFindProductsByCategoryIdSuccessfully() {
+    void testShouldFindProductsByCategoryIdSuccessfully() {
         // Arrange
         List<ProductJpaEntity> jpaEntities = List.of(productJpaEntity);
         when(productJpaRepository.findByCategoryId(categoryId)).thenReturn(jpaEntities);
@@ -143,7 +143,7 @@ class ProductRepositoryGatewayTest {
 
     @Test
     @DisplayName("Should find all products successfully")
-    void shouldFindAllProductsSuccessfully() {
+    void testShouldFindAllProductsSuccessfully() {
         // Arrange
         List<ProductJpaEntity> jpaEntities = List.of(productJpaEntity);
         when(productJpaRepository.findAll()).thenReturn(jpaEntities);
@@ -160,7 +160,7 @@ class ProductRepositoryGatewayTest {
 
     @Test
     @DisplayName("Should delete product by id successfully")
-    void shouldDeleteProductByIdSuccessfully() {
+    void testShouldDeleteProductByIdSuccessfully() {
         // Arrange
         doNothing().when(productJpaRepository).deleteById(productId);
 

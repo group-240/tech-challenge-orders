@@ -85,7 +85,7 @@ class OrderUseCaseImplTest {
 
     @Test
     @DisplayName("Should create order successfully")
-    void shouldCreateOrderSuccessfully() {
+    void testShouldCreateOrderSuccessfully() {
         // Arrange
         when(customerApiClient.fetchCustomerByCpf("12345678900")).thenReturn(customerData);
         when(productRepository.findById(any(UUID.class))).thenReturn(Optional.of(product));
@@ -114,7 +114,7 @@ class OrderUseCaseImplTest {
 
     @Test
     @DisplayName("Should throw NotFoundException when product not found")
-    void shouldThrowNotFoundExceptionWhenProductNotFound() {
+    void testShouldThrowNotFoundExceptionWhenProductNotFound() {
         // Arrange
         when(customerApiClient.fetchCustomerByCpf("12345678900")).thenReturn(customerData);
         when(productRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
@@ -132,7 +132,7 @@ class OrderUseCaseImplTest {
 
     @Test
     @DisplayName("Should throw DomainException when product is inactive")
-    void shouldThrowDomainExceptionWhenProductIsInactive() {
+    void testShouldThrowDomainExceptionWhenProductIsInactive() {
         // Arrange
         Product inactiveProduct = Product.builder()
                 .id(UUID.randomUUID())
@@ -158,7 +158,7 @@ class OrderUseCaseImplTest {
 
     @Test
     @DisplayName("Should throw DomainException for invalid quantity")
-    void shouldThrowDomainExceptionForInvalidQuantity() {
+    void testShouldThrowDomainExceptionForInvalidQuantity() {
         // Arrange
         OrderItemRequest invalidItem = new OrderItemRequest(UUID.randomUUID(), 0);
         when(customerApiClient.fetchCustomerByCpf("12345678900")).thenReturn(customerData);
@@ -175,7 +175,7 @@ class OrderUseCaseImplTest {
 
     @Test
     @DisplayName("Should find order by ID successfully")
-    void shouldFindOrderByIdSuccessfully() {
+    void testShouldFindOrderByIdSuccessfully() {
         // Arrange
         when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
 
@@ -190,7 +190,7 @@ class OrderUseCaseImplTest {
 
     @Test
     @DisplayName("Should throw NotFoundException when order not found by ID")
-    void shouldThrowNotFoundExceptionWhenOrderNotFoundById() {
+    void testShouldThrowNotFoundExceptionWhenOrderNotFoundById() {
         // Arrange
         when(orderRepository.findById(1L)).thenReturn(Optional.empty());
 
@@ -205,7 +205,7 @@ class OrderUseCaseImplTest {
 
     @Test
     @DisplayName("Should find orders by status")
-    void shouldFindOrdersByStatus() {
+    void testShouldFindOrdersByStatus() {
         // Arrange
         List<Order> orders = List.of(order);
         when(orderRepository.findByOptionalStatus(OrderStatus.RECEIVED)).thenReturn(orders);
@@ -221,7 +221,7 @@ class OrderUseCaseImplTest {
 
     @Test
     @DisplayName("Should update order status successfully")
-    void shouldUpdateOrderStatusSuccessfully() {
+    void testShouldUpdateOrderStatusSuccessfully() {
         // Arrange
         Order paidOrder = new Order(1L, "12345678900", List.of(), BigDecimal.valueOf(20.00), 
                                    OrderStatus.RECEIVED, StatusPayment.APROVADO, 
@@ -241,7 +241,7 @@ class OrderUseCaseImplTest {
 
     @Test
     @DisplayName("Should throw DomainException when order is not paid")
-    void shouldThrowDomainExceptionWhenOrderIsNotPaid() {
+    void testShouldThrowDomainExceptionWhenOrderIsNotPaid() {
         // Arrange
         when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
 
@@ -256,7 +256,7 @@ class OrderUseCaseImplTest {
 
     @Test
     @DisplayName("Should update order status to preparation")
-    void shouldUpdateOrderStatusToPreparation() {
+    void testShouldUpdateOrderStatusToPreparation() {
         // Arrange
         when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
         when(orderRepository.save(any(Order.class))).thenReturn(order);
@@ -272,7 +272,7 @@ class OrderUseCaseImplTest {
 
     @Test
     @DisplayName("Should update order payment status by payment ID")
-    void shouldUpdateOrderPaymentStatusByPaymentId() {
+    void testShouldUpdateOrderPaymentStatusByPaymentId() {
         // Arrange
         when(orderRepository.findByIdPayment(123L)).thenReturn(Optional.of(order));
         when(orderRepository.save(any(Order.class))).thenReturn(order);
@@ -288,7 +288,7 @@ class OrderUseCaseImplTest {
 
     @Test
     @DisplayName("Should validate quantity correctly")
-    void shouldValidateQuantityCorrectly() {
+    void testShouldValidateQuantityCorrectly() {
         // Positive case already covered in create order test
         
         // Test edge case - negative quantity
@@ -299,7 +299,7 @@ class OrderUseCaseImplTest {
 
     @Test
     @DisplayName("Should validate product correctly")
-    void shouldValidateProductCorrectly() {
+    void testShouldValidateProductCorrectly() {
         // Arrange
         when(productRepository.findById(any(UUID.class))).thenReturn(Optional.of(product));
 
@@ -313,7 +313,7 @@ class OrderUseCaseImplTest {
 
     @Test
     @DisplayName("Should convert order items correctly")
-    void shouldConvertOrderItemsCorrectly() {
+    void testShouldConvertOrderItemsCorrectly() {
         // Arrange
         when(productRepository.findById(any(UUID.class))).thenReturn(Optional.of(product));
         List<OrderItemRequest> items = List.of(orderItemRequest);
@@ -331,7 +331,7 @@ class OrderUseCaseImplTest {
 
     @Test
     @DisplayName("Should create payment order and parse response")
-    void shouldCreatePaymentOrderAndParseResponse() {
+    void testShouldCreatePaymentOrderAndParseResponse() {
         // Arrange
         when(paymentApiClient.createPayment(any(), any(), any(), any(), any(), any(), any()))
                 .thenReturn("{\"id\":456}");
@@ -349,7 +349,7 @@ class OrderUseCaseImplTest {
 
     @Test
     @DisplayName("Should handle payment response parsing error")
-    void shouldHandlePaymentResponseParsingError() {
+    void testShouldHandlePaymentResponseParsingError() {
         // Arrange
         when(paymentApiClient.createPayment(any(), any(), any(), any(), any(), any(), any()))
                 .thenReturn("invalid json");
@@ -365,7 +365,7 @@ class OrderUseCaseImplTest {
 
     @Test
     @DisplayName("Should create order with null customer data")
-    void shouldCreateOrderWithNullCustomerData() {
+    void testShouldCreateOrderWithNullCustomerData() {
         // Arrange
         when(paymentApiClient.createPayment(any(), any(), any(), any(), any(), any(), any()))
                 .thenReturn("{\"id\":789}");
@@ -389,7 +389,7 @@ class OrderUseCaseImplTest {
 
     @Test
     @DisplayName("Should create payment order with null customer data")
-    void shouldCreatePaymentOrderWithNullCustomerData() {
+    void testShouldCreatePaymentOrderWithNullCustomerData() {
         // Arrange
         when(paymentApiClient.createPayment(any(), any(), any(), any(), 
                 eq("default@example.com"), eq("CPF"), eq("00000000000")))
@@ -409,7 +409,7 @@ class OrderUseCaseImplTest {
 
     @Test
     @DisplayName("Should create payment order with customer data missing email")
-    void shouldCreatePaymentOrderWithCustomerDataMissingEmail() throws Exception {
+    void testShouldCreatePaymentOrderWithCustomerDataMissingEmail() throws Exception {
         // Arrange
         ObjectMapper mapper = new ObjectMapper();
         String customerJsonNoEmail = "{\"cpf\":\"12345678900\"}";
@@ -433,7 +433,7 @@ class OrderUseCaseImplTest {
 
     @Test
     @DisplayName("Should create payment order with customer data missing cpf")
-    void shouldCreatePaymentOrderWithCustomerDataMissingCpf() throws Exception {
+    void testShouldCreatePaymentOrderWithCustomerDataMissingCpf() throws Exception {
         // Arrange
         ObjectMapper mapper = new ObjectMapper();
         String customerJsonNoCpf = "{\"email\":\"test@test.com\"}";

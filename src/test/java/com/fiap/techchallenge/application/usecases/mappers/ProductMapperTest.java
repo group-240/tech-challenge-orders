@@ -16,7 +16,7 @@ class ProductMapperTest {
 
     @Test
     @DisplayName("Should map Product to ProductJpaEntity")
-    void shouldMapProductToProductJpaEntity() {
+    void testShouldMapProductToProductJpaEntity() {
         // Arrange
         UUID productId = UUID.randomUUID();
         UUID categoryId = UUID.randomUUID();
@@ -47,7 +47,7 @@ class ProductMapperTest {
 
     @Test
     @DisplayName("Should map ProductJpaEntity to Product")
-    void shouldMapProductJpaEntityToProduct() {
+    void testShouldMapProductJpaEntityToProduct() {
         // Arrange
         UUID productId = UUID.randomUUID();
         UUID categoryId = UUID.randomUUID();
@@ -72,7 +72,7 @@ class ProductMapperTest {
 
     @Test
     @DisplayName("Should handle null Product in toJpaEntity")
-    void shouldHandleNullProductInToJpaEntity() {
+    void testShouldHandleNullProductInToJpaEntity() {
         // Act
         ProductJpaEntity result = ProductMapper.toJpaEntity(null);
 
@@ -82,7 +82,7 @@ class ProductMapperTest {
 
     @Test
     @DisplayName("Should handle null ProductJpaEntity in toDomainEntity")
-    void shouldHandleNullProductJpaEntityInToDomainEntity() {
+    void testShouldHandleNullProductJpaEntityInToDomainEntity() {
         // Act
         Product result = ProductMapper.toDomainEntity(null);
 
@@ -92,7 +92,7 @@ class ProductMapperTest {
 
     @Test
     @DisplayName("Should handle Product with null category")
-    void shouldHandleProductWithNullCategory() {
+    void testShouldHandleProductWithNullCategory() {
         // Arrange
         UUID productId = UUID.randomUUID();
         Product product = Product.builder()
@@ -116,7 +116,7 @@ class ProductMapperTest {
 
     @Test
     @DisplayName("Should handle ProductJpaEntity with null category")
-    void shouldHandleProductJpaEntityWithNullCategory() {
+    void testShouldHandleProductJpaEntityWithNullCategory() {
         // Arrange
         UUID productId = UUID.randomUUID();
         ProductJpaEntity jpaEntity = new ProductJpaEntity(productId, "Product", "Description", 
