@@ -43,11 +43,6 @@ public class PaymentApiClient {
                 }
             """, amount, description, method, installments, email, documentType, documentNumber);
 
-            // ✅ Log do JSON enviado
-            System.out.println("[PaymentApiClient] Enviando requisição POST para: " + url);
-            System.out.println("[PaymentApiClient] Payload JSON:\n" + payload);
-
-
             try (OutputStream os = connection.getOutputStream()) {
                 os.write(payload.getBytes(StandardCharsets.UTF_8));
             }
