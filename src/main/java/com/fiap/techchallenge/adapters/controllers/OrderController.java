@@ -18,8 +18,8 @@ public class OrderController {
         this.orderUseCase = orderUseCase;
     }
 
-    public Order createOrder(UUID customerId, List<OrderItemRequest> items) {
-        return orderUseCase.createOrder(customerId, items);
+    public Order createOrder(String cpf, List<OrderItemRequest> items) {
+        return orderUseCase.createOrder(cpf, items);
     }
 
     public Optional<Order> findOrderById(Long id) {

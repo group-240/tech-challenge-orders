@@ -28,7 +28,7 @@ public class OrderRestController {
     @PostMapping
     @Operation(summary = "Criar novo pedido")
     public ResponseEntity<Order> createOrder(@RequestBody OrderRequestDTO orderRequest) {
-        Order order = orderController.createOrder(orderRequest.getCustomerId(), orderRequest.getItems());
+        Order order = orderController.createOrder(orderRequest.getCpf(), orderRequest.getItems());
         return ResponseEntity.status(HttpStatus.CREATED).body(order);
     }
 
@@ -70,11 +70,11 @@ public class OrderRestController {
 
     // DTOs internos
     public static class OrderRequestDTO {
-        private UUID customerId;
+        private String cpf;
         private List<OrderItemRequest> items;
 
-        public UUID getCustomerId() { return customerId; }
-        public void setCustomerId(UUID customerId) { this.customerId = customerId; }
+        public String getCpf() { return cpf; }
+        public void setCpf(String cpf) { this.cpf = cpf; }
         public List<OrderItemRequest> getItems() { return items; }
         public void setItems(List<OrderItemRequest> items) { this.items = items; }
     }

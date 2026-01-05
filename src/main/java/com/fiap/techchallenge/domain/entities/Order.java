@@ -3,12 +3,10 @@ package com.fiap.techchallenge.domain.entities;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 public class Order {
     private Long id;
-    private UUID customerId;
-    private Customer customer;
+    private String cpf;
     private List<OrderItem> items;
     private BigDecimal totalAmount;
     private OrderStatus status;
@@ -19,12 +17,10 @@ public class Order {
 
     public Order() {}
 
-    public Order(Long id, UUID customerId, Customer customer, List<OrderItem> items,
-                 BigDecimal totalAmount, OrderStatus status, StatusPayment statusPayment,
-                 Long idPayment, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Order(Long id, String cpf, List<OrderItem> items, BigDecimal totalAmount, OrderStatus status,
+                 StatusPayment statusPayment, Long idPayment, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
-        this.customerId = customerId;
-        this.customer = customer;
+        this.cpf = cpf;
         this.items = items;
         this.totalAmount = totalAmount;
         this.status = status;
@@ -35,7 +31,7 @@ public class Order {
     }
 
     // Factory method
-    public static Order create(Customer customer, List<OrderItem> items) {
+    public static Order create(String cpf, List<OrderItem> items) {
         BigDecimal total = items.stream()
                 .map(OrderItem::getSubTotal)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -44,8 +40,7 @@ public class Order {
 
         return new Order(
             null,
-            customer != null ? customer.getId() : null,
-            customer,
+            cpf,
             items,
             total,
             OrderStatus.RECEIVED,
@@ -58,8 +53,7 @@ public class Order {
 
     // Getters
     public Long getId() { return id; }
-    public UUID getCustomerId() { return customerId; }
-    public Customer getCustomer() { return customer; }
+    public String getCpf() { return cpf; }
     public List<OrderItem> getItems() { return items; }
     public BigDecimal getTotalAmount() { return totalAmount; }
     public OrderStatus getStatus() { return status; }
@@ -70,8 +64,7 @@ public class Order {
 
     // Setters
     public void setId(Long id) { this.id = id; }
-    public void setCustomerId(UUID customerId) { this.customerId = customerId; }
-    public void setCustomer(Customer customer) { this.customer = customer; }
+    public void setCpf(String cpf) { this.cpf = cpf; }
     public void setItems(List<OrderItem> items) { this.items = items; }
     public void setTotalAmount(BigDecimal totalAmount) { this.totalAmount = totalAmount; }
     public void setStatus(OrderStatus status) { this.status = status; }

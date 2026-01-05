@@ -12,11 +12,7 @@ public class OrderMapper {
 
         OrderJpaEntity jpaEntity = new OrderJpaEntity();
         jpaEntity.setId(order.getId());
-        jpaEntity.setCustomerId(order.getCustomerId());
-
-        if (order.getCustomer() != null) {
-            jpaEntity.setCustomer(CustomerMapper.toJpaEntity(order.getCustomer()));
-        }
+        jpaEntity.setCpf(order.getCpf());
 
         if (order.getItems() != null) {
             List<OrderItemJpaEntity> itemsJpa = order.getItems().stream()
@@ -38,11 +34,6 @@ public class OrderMapper {
     public static Order toDomainEntity(OrderJpaEntity jpaEntity) {
         if (jpaEntity == null) return null;
 
-        Customer customer = null;
-        if (jpaEntity.getCustomer() != null) {
-            customer = CustomerMapper.toDomainEntity(jpaEntity.getCustomer());
-        }
-
         List<OrderItem> items = null;
         if (jpaEntity.getItems() != null) {
             items = jpaEntity.getItems().stream()
@@ -52,8 +43,7 @@ public class OrderMapper {
 
         return new Order(
             jpaEntity.getId(),
-            jpaEntity.getCustomerId(),
-            customer,
+            jpaEntity.getCpf(),
             items,
             jpaEntity.getTotalAmount(),
             mapToDomainStatus(jpaEntity.getStatus()),
