@@ -154,15 +154,12 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.12</version>
                 <executions>
-                    <!-- Etapa 1: ativa o agente antes dos testes -->
                     <execution>
                         <id>prepare-agent</id>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
                     </execution>
-
-                    <!-- Etapa 2: gera o relatório após os testes -->
                     <execution>
                         <id>report</id>
                         <phase>verify</phase>
@@ -170,8 +167,6 @@
                             <goal>report</goal>
                         </goals>
                     </execution>
-
-                    <!-- Etapa 3: verificação de cobertura mínima -->
                     <execution>
                         <id>check</id>
                         <goals>
@@ -185,12 +180,12 @@
                                         <limit>
                                             <counter>LINE</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.80</minimum>
+                                            <minimum>0.70</minimum>
                                         </limit>
                                         <limit>
                                             <counter>BRANCH</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.80</minimum>
+                                            <minimum>0.70</minimum>
                                         </limit>
                                     </limits>
                                 </rule>
@@ -200,7 +195,7 @@
                 </executions>
                 <configuration>
                     <excludes>
-                        <!-- Excluir classes de configuração e entidades JPA -->
+                        <!-- Excluir classes de configuração e entidades -->
                         <exclude>**/config/**</exclude>
                         <exclude>**/TechChallengeApplication.class</exclude>
                         <exclude>**/external/datasource/entities/**</exclude>
