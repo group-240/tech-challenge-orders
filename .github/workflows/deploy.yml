@@ -72,7 +72,7 @@ jobs:
       uses: hashicorp/setup-terraform@v3
 
     - name: Terraform Init
-      run: terraform init -input=false
+      run: terraform init -input=false -upgrade
 
     - name: Terraform Plan
       id: plan
@@ -155,39 +155,21 @@ jobs:
 
     - name: Terraform Init
       working-directory: ./terraform
-      run: terraform init -input=false
+      run: terraform init -input=false -upgrade
 
-    - name: Fix Terraform State (import existing resources)
+    - name: Fix Terraform State (avoid Identity Change bug)
       working-directory: ./terraform
       continue-on-error: true
       run: |
-        echo "🔧 Sincronizando recursos Kubernetes com o state do Terraform..."
+        echo "🔧 Limpando state para evitar bug Identity Change..."
         
-        # Configurar kubectl
-        aws eks update-kubeconfig --name tech-challenge-cluster --region ${{ env.AWS_REGION }} 2>/dev/null || true
+        # Fix para bug do Kubernetes provider "Unexpected Identity Change"
+        # Remove recursos kubernetes do state - terraform vai recriá-los
+        terraform state rm kubernetes_deployment.app 2>/dev/null && echo "  - kubernetes_deployment.app removido" || true
+        terraform state rm kubernetes_service.app 2>/dev/null && echo "  - kubernetes_service.app removido" || true
+        terraform state rm kubernetes_secret.db_credentials 2>/dev/null && echo "  - kubernetes_secret.db_credentials removido" || true
         
-        NAMESPACE="tech-challenge"
-        APP_NAME="orders"
-        
-        # Verificar se o deployment existe no cluster e importar se necessário
-        if kubectl get deployment $APP_NAME -n $NAMESPACE 2>/dev/null; then
-          echo "📦 Deployment $APP_NAME existe no cluster"
-          if ! terraform state show kubernetes_deployment.app 2>/dev/null; then
-            echo "🔄 Importando deployment para o state..."
-            terraform import kubernetes_deployment.app "$NAMESPACE/$APP_NAME" || true
-          fi
-        fi
-        
-        # Verificar se o service existe no cluster e importar se necessário
-        if kubectl get service $APP_NAME -n $NAMESPACE 2>/dev/null; then
-          echo "📦 Service $APP_NAME existe no cluster"
-          if ! terraform state show kubernetes_service.app 2>/dev/null; then
-            echo "🔄 Importando service para o state..."
-            terraform import kubernetes_service.app "$NAMESPACE/$APP_NAME" || true
-          fi
-        fi
-        
-        echo "✅ Sincronização concluída"
+        echo "✅ State limpo - recursos serão recriados"
 
     - name: Terraform Apply
       working-directory: ./terraform
