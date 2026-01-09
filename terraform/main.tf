@@ -8,7 +8,7 @@ terraform {
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "2.20.0"  # Versão fixa para evitar bug "Unexpected Identity Change"
+      version = "~> 2.23"
     }
   }
 

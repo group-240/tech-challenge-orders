@@ -74,17 +74,10 @@ jobs:
     - name: Terraform Init
       run: terraform init -input=false -upgrade
 
-    - name: Fix Terraform State
-      continue-on-error: true
-      run: |
-        # State foi criado com provider mais novo - remover recursos kubernetes
-        terraform state rm kubernetes_deployment.app 2>/dev/null || true
-        terraform state rm kubernetes_service.app 2>/dev/null || true
-        terraform state rm kubernetes_secret.db_credentials 2>/dev/null || true
-
     - name: Terraform Plan
       id: plan
-      run: terraform plan -no-color -input=false -var="db_username=${{ secrets.DB_USERNAME }}" -var="db_password=${{ secrets.DB_PASSWORD }}" 2>&1 | tee plan_output.txt
+      # Usar -refresh=false para evitar bug "Unexpected Identity Change" do provider kubernetes
+      run: terraform plan -no-color -input=false -refresh=false -var="db_username=${{ secrets.DB_USERNAME }}" -var="db_password=${{ secrets.DB_PASSWORD }}" 2>&1 | tee plan_output.txt
       continue-on-error: true
 
     - name: Comment PR with Plan
@@ -165,24 +158,11 @@ jobs:
       working-directory: ./terraform
       run: terraform init -input=false -upgrade
 
-    - name: Fix Terraform State (avoid Identity Change bug)
-      working-directory: ./terraform
-      continue-on-error: true
-      run: |
-        echo "🔧 Limpando state para evitar bug Identity Change..."
-        
-        # Fix para bug do Kubernetes provider "Unexpected Identity Change"
-        # Remove recursos kubernetes do state - terraform vai recriá-los
-        terraform state rm kubernetes_deployment.app 2>/dev/null && echo "  - kubernetes_deployment.app removido" || true
-        terraform state rm kubernetes_service.app 2>/dev/null && echo "  - kubernetes_service.app removido" || true
-        terraform state rm kubernetes_secret.db_credentials 2>/dev/null && echo "  - kubernetes_secret.db_credentials removido" || true
-        
-        echo "✅ State limpo - recursos serão recriados"
-
     - name: Terraform Apply
       working-directory: ./terraform
+      # Usar -refresh=false para evitar bug "Unexpected Identity Change" do provider kubernetes
       run: |
-        terraform apply -auto-approve -input=false \
+        terraform apply -auto-approve -input=false -refresh=false \
           -var="image_tag=${{ github.sha }}" \
           -var="db_username=${{ secrets.DB_USERNAME }}" \
           -var="db_password=${{ secrets.DB_PASSWORD }}"
