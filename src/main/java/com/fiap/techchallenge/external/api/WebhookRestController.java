@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/webhook")
+@RequestMapping("/webhooks")
 @Tag(name = "Webhooks", description = "API para receber notificações de pagamento")
 public class WebhookRestController {
 
