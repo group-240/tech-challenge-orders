@@ -1,50 +1,28 @@
-# 🍔 Tech Challenge - Food Service API
+# Tech Challenge - Orders
 
-[![Java Version](https://img.shields.io/badge/Java-17-%23ED8B00?logo=openjdk)](https://openjdk.org/)
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3.5-%236DB33F?logo=spring)](https://spring.io/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14.9-%23316192?logo=postgresql)](https://www.postgresql.org/)
-[![AWS EKS](https://img.shields.io/badge/AWS-EKS-%23FF9900?logo=amazon-aws)](https://aws.amazon.com/eks/)
-[![Terraform](https://img.shields.io/badge/Terraform-1.5.0-%23623CE4?logo=terraform)](https://www.terraform.io/)
+Repositório responsável pelo microserviço de pedidos.
 
-Aplicação Spring Boot com **Clean Architecture** rodando em **AWS EKS** com deploy automático via **GitHub Actions** e **Terraform**.
----
+## O que este repositório faz
 
-## 🍔 API Endpoints
+- **API de Pedidos** - CRUD de pedidos
+- **API de Produtos** - CRUD de produtos
+- **API de Categorias** - CRUD de categorias
+- **Deployment K8s** - Deploy no EKS via Terraform
 
-### Públicos (Sem autenticação)
-- `GET  /api/health`          - Status da aplicação
-- `GET  /api/categories`      - Listar categorias
-- `POST /api/categories`      - Criar categoria
-- `GET  /api/products`        - Listar produtos
-- `POST /api/products`        - Criar produto
-- `POST /api/webhook/payment` - Webhook Mercado Pago
+## Dependências
 
-### Protegidos (Requer JWT)
-- `POST /api/orders`             - Criar pedido
-- `GET  /api/orders`             - Listar pedidos
-- `PUT  /api/orders/{id}/status` - Atualizar status
+| Dependência | Descrição |
+|-------------|-----------|
+| tech-challenge-infra | EKS Cluster e ECR (via remote state) |
+| tech-challenge-rds | PostgreSQL (via remote state) |
+| Terraform >= 1.10.0 | Ferramenta de IaC |
+| Java 17 | Runtime da aplicação |
+| Maven | Build da aplicação |
 
-## 🛠️ Tecnologias Utilizadas
+## Secrets Necessários (GitHub)
 
-### Backend
-- **Java 17** - Linguagem principal
-- **Spring Boot 3.3.5** - Framework web
-- **Spring Data JPA** - Persistência
-- **Spring Security OAuth2** - Autenticação JWT
-- **PostgreSQL 14.9** - Banco de dados
-- **Maven** - Gerenciamento de dependências
-
-### Teste a API
-`mvn test`
-`mvn clean verify`
-
-Validar cobertura de testes
-`http://localhost:8888/target/site/jacoco/index.html`
-
----
-
-## 📄 Licença
-
-MIT License - veja [LICENSE](../LICENSE.md) para detalhes.
-
-**Desenvolvido com ❤️ pela equipe FIAP Tech Challenge**
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+- `AWS_SESSION_TOKEN` (obrigatório para AWS Academy Learner Lab)
+- `DB_USERNAME` - Usuário do PostgreSQL
+- `DB_PASSWORD` - Senha do PostgreSQL
