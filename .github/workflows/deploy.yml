@@ -155,13 +155,37 @@ jobs:
       working-directory: ./terraform
       run: terraform init -input=false
 
-    - name: Fix Terraform State (remove corrupted resources)
+    - name: Fix Terraform State (import existing resources)
       working-directory: ./terraform
       continue-on-error: true
       run: |
-        # Remove recursos com state corrompido (erro de identity change)
-        terraform state rm kubernetes_deployment.app || true
-        terraform state rm kubernetes_service.app || true
+        echo "🔧 Sincronizando recursos Kubernetes com o state do Terraform..."
+        
+        # Configurar kubectl
+        aws eks update-kubeconfig --name tech-challenge-cluster --region ${{ env.AWS_REGION }} 2>/dev/null || true
+        
+        NAMESPACE="tech-challenge"
+        APP_NAME="orders"
+        
+        # Verificar se o deployment existe no cluster e importar se necessário
+        if kubectl get deployment $APP_NAME -n $NAMESPACE 2>/dev/null; then
+          echo "📦 Deployment $APP_NAME existe no cluster"
+          if ! terraform state show kubernetes_deployment.app 2>/dev/null; then
+            echo "🔄 Importando deployment para o state..."
+            terraform import kubernetes_deployment.app "$NAMESPACE/$APP_NAME" || true
+          fi
+        fi
+        
+        # Verificar se o service existe no cluster e importar se necessário
+        if kubectl get service $APP_NAME -n $NAMESPACE 2>/dev/null; then
+          echo "📦 Service $APP_NAME existe no cluster"
+          if ! terraform state show kubernetes_service.app 2>/dev/null; then
+            echo "🔄 Importando service para o state..."
+            terraform import kubernetes_service.app "$NAMESPACE/$APP_NAME" || true
+          fi
+        fi
+        
+        echo "✅ Sincronização concluída"
 
     - name: Terraform Apply
       working-directory: ./terraform
