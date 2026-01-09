@@ -56,7 +56,7 @@ class WebhookRestControllerTest {
         doNothing().when(webhookController).handlePaymentNotification(eq(9988776655L));
 
         // Act & Assert
-        mockMvc.perform(post("/webhook")
+        mockMvc.perform(post("/webhooks")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(webhookRequest)))
                 .andExpect(status().isOk());
@@ -76,7 +76,7 @@ class WebhookRestControllerTest {
         doNothing().when(webhookController).handlePaymentNotification(eq(1234567890L));
 
         // Act & Assert
-        mockMvc.perform(post("/webhook")
+        mockMvc.perform(post("/webhooks")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(webhookRequest)))
                 .andExpect(status().isOk());
@@ -100,7 +100,7 @@ class WebhookRestControllerTest {
         doNothing().when(webhookController).handlePaymentNotification(eq(555666777L));
 
         // Act & Assert
-        mockMvc.perform(post("/webhook")
+        mockMvc.perform(post("/webhooks")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(webhookRequest)))
                 .andExpect(status().isOk());
@@ -128,7 +128,7 @@ class WebhookRestControllerTest {
         doNothing().when(webhookController).handlePaymentNotification(eq(7777888899L));
 
         // Act & Assert
-        mockMvc.perform(post("/webhook")
+        mockMvc.perform(post("/webhooks")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(webhookRequest)))
                 .andExpect(status().isOk());
