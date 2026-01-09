@@ -24,17 +24,16 @@ springdoc:
     operationsSorter: method
 
 server:
-  port: 8888
+  port: 8080
   servlet:
-    context-path: /api
+    context-path: /
 
 # Actuator configuration
 management:
   endpoints:
     web:
       exposure:
-        include: health
-      base-path: /
+        include: health,info
   endpoint:
     health:
       show-details: always
