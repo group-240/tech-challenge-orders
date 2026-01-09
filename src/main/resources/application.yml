@@ -52,7 +52,7 @@ logging:
 mercado-pago.access-token: TEST-6132655548485399-050519-5c52fb1e9a2a627837f4bff581e36402-495359857
 
 customer-api:
-  base-url: http://customer-service.tech-challenge:8080/api
+  base-url: http://customer-service.tech-challenge:80/api
 
 payment-api:
-  base-url: http://payments-service.tech-challenge:8080/api
+  base-url: http://payments-service.tech-challenge:80/api
