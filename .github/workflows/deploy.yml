@@ -139,16 +139,18 @@ jobs:
       working-directory: ./terraform
       run: terraform init -input=false
 
+    - name: Fix Terraform State (remove corrupted resources)
+      working-directory: ./terraform
+      continue-on-error: true
+      run: |
+        # Remove recursos com state corrompido (erro de identity change)
+        terraform state rm kubernetes_deployment.app || true
+        terraform state rm kubernetes_service.app || true
+
     - name: Terraform Apply
       working-directory: ./terraform
       run: |
-        # Tenta apply normal, se falhar com erro de identity, força replace
         terraform apply -auto-approve -input=false \
-          -var="image_tag=${{ github.sha }}" \
-          -var="db_username=${{ secrets.DB_USERNAME }}" \
-          -var="db_password=${{ secrets.DB_PASSWORD }}" || \
-        terraform apply -auto-approve -input=false \
-          -replace=kubernetes_deployment.app \
           -var="image_tag=${{ github.sha }}" \
           -var="db_username=${{ secrets.DB_USERNAME }}" \
           -var="db_password=${{ secrets.DB_PASSWORD }}"
