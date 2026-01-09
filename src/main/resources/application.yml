@@ -41,13 +41,11 @@ management:
       probes:
         enabled: true
 
-# Logging
+# Logging - Configuração detalhada em logback-spring.xml (JSON estruturado para CloudWatch)
 logging:
   level:
     root: INFO
-    com.fiap.techchallenge: DEBUG
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    com.fiap.techchallenge: INFO
 
 mercado-pago.access-token: TEST-6132655548485399-050519-5c52fb1e9a2a627837f4bff581e36402-495359857
 
