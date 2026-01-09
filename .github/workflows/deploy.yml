@@ -74,6 +74,14 @@ jobs:
     - name: Terraform Init
       run: terraform init -input=false -upgrade
 
+    - name: Fix Terraform State
+      continue-on-error: true
+      run: |
+        # State foi criado com provider mais novo - remover recursos kubernetes
+        terraform state rm kubernetes_deployment.app 2>/dev/null || true
+        terraform state rm kubernetes_service.app 2>/dev/null || true
+        terraform state rm kubernetes_secret.db_credentials 2>/dev/null || true
+
     - name: Terraform Plan
       id: plan
       run: terraform plan -no-color -input=false -var="db_username=${{ secrets.DB_USERNAME }}" -var="db_password=${{ secrets.DB_PASSWORD }}" 2>&1 | tee plan_output.txt
