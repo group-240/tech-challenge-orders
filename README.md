@@ -2,12 +2,19 @@
 
 Repositório responsável pelo microserviço de pedidos.
 
-## O que este repositório faz
+## 🍔 API Endpoints
 
-- **API de Pedidos** - CRUD de pedidos
-- **API de Produtos** - CRUD de produtos
-- **API de Categorias** - CRUD de categorias
-- **Deployment K8s** - Deploy no EKS via Terraform
+### Públicos (Sem autenticação)
+@@ -50,36 +17,13 @@ GitHub Secrets → Terraform → Kubernetes Secrets → Pods
+- `POST /api/categories`      - Criar categoria
+- `GET  /api/products`        - Listar produtos
+- `POST /api/products`        - Criar produto
+- `POST /api/webhook/payment` - Webhook Mercado Pago
+
+### Protegidos (Requer JWT)
+- `POST /api/orders`             - Criar pedido
+- `GET  /api/orders`             - Listar pedidos
+- `PUT  /api/orders/{id}/status` - Atualizar status
 
 ## Dependências
 
@@ -26,3 +33,11 @@ Repositório responsável pelo microserviço de pedidos.
 - `AWS_SESSION_TOKEN` (obrigatório para AWS Academy Learner Lab)
 - `DB_USERNAME` - Usuário do PostgreSQL
 - `DB_PASSWORD` - Senha do PostgreSQL
+
+### Teste a API
+`mvn test`
+`mvn clean verify`
+
+#### Validar cobertura de testes
+
+`http://localhost:8888/target/site/jacoco/index.html`
