@@ -188,10 +188,22 @@ jobs:
       if: always() && steps.tests.outcome == 'success'
       run: |
         if [ -f target/site/jacoco/index.html ]; then
-          COVERAGE=$(grep -oP 'Total.*?(\d+)%' target/site/jacoco/index.html | grep -oP '\d+' | head -1 || echo "0")
+          # JaCoCo HTML format: look for the Total row and extract the coverage percentage
+          # The format is: <tfoot><tr><td>Total</td>...<td class="ctr2">XX%</td></tr></tfoot>
+          COVERAGE=$(grep -A5 '<tfoot>' target/site/jacoco/index.html | grep -oP '\d+\s*%' | tail -1 | grep -oP '\d+' || echo "0")
+          
+          # Fallback: try alternative JaCoCo format
+          if [ -z "$COVERAGE" ] || [ "$COVERAGE" = "0" ]; then
+            COVERAGE=$(grep 'ctr2' target/site/jacoco/index.html | tail -1 | grep -oP '\d+(?=\s*%)' | head -1 || echo "N/A")
+          fi
+          
           echo "percentage=$COVERAGE" >> $GITHUB_OUTPUT
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### 📊 Cobertura de Código: ${COVERAGE}%" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "percentage=N/A" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📊 Cobertura de Código: Relatório não encontrado" >> $GITHUB_STEP_SUMMARY
         fi
 
     - name: "📤 Upload JaCoCo coverage report"
