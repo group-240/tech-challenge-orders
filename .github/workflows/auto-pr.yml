@@ -18,36 +18,90 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Check if PR exists and create if not
+      - name: Wait for GitHub to sync (avoid race condition)
+        run: |
+          echo "⏳ Waiting 15 seconds for GitHub to process any concurrent merges..."
+          sleep 15
+
+      - name: Check for pending commits and create PR if needed
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           BRANCH_NAME="${GITHUB_REF#refs/heads/}"
           REPO="${GITHUB_REPOSITORY}"
           
-          echo "Checking for existing PR from '$BRANCH_NAME' to 'main'..."
+          echo "🔍 Branch: $BRANCH_NAME"
+          echo "🔍 Repository: $REPO"
           
-          EXISTING_PR=$(gh pr list --head "$BRANCH_NAME" --base main --state open --json number --jq '.[0].number')
+          # Fetch latest main to compare
+          git fetch origin main --quiet
           
-          if [ -n "$EXISTING_PR" ]; then
-            echo "PR #$EXISTING_PR already exists for branch '$BRANCH_NAME' -> main"
-            echo "https://github.com/$REPO/pull/$EXISTING_PR"
-          else
-            echo "No existing PR found. Creating new PR..."
+          # Check if there are commits in this branch not in main
+          PENDING_COMMITS=$(git log origin/main..HEAD --oneline 2>/dev/null | wc -l)
+          
+          if [ "$PENDING_COMMITS" -eq 0 ]; then
+            echo "✅ No pending commits. Branch is already merged or up to date with main."
+            exit 0
+          fi
+          
+          echo "📝 Found $PENDING_COMMITS pending commit(s) not in main"
+          git log origin/main..HEAD --oneline
+          
+          # Check for existing open PR
+          echo ""
+          echo "🔍 Checking for existing open PR from '$BRANCH_NAME' to 'main'..."
+          
+          EXISTING_PR=$(gh pr list --head "$BRANCH_NAME" --base main --state open --json number,url --jq '.[0]')
+          
+          if [ -n "$EXISTING_PR" ] && [ "$EXISTING_PR" != "null" ]; then
+            PR_NUM=$(echo "$EXISTING_PR" | jq -r '.number')
+            PR_URL=$(echo "$EXISTING_PR" | jq -r '.url')
+            echo "✅ PR #$PR_NUM already exists: $PR_URL"
+            exit 0
+          fi
+          
+          echo "📝 No existing PR found. Creating new PR..."
+          
+          # Get commit info for PR
+          COMMIT_MSG=$(git log -1 --pretty=%s)
+          COMMIT_INFO=$(git log -1 --pretty=format:'%h - %s (%an, %ar)')
+          ALL_COMMITS=$(git log origin/main..HEAD --pretty=format:'- %h %s' | head -10)
+          
+          PR_BODY="## Auto-generated PR
+
+This PR was automatically created from branch \`$BRANCH_NAME\`.
+
+### Commits ($PENDING_COMMITS total)
+$ALL_COMMITS
+
+### Last Commit
+$COMMIT_INFO"
+          
+          # Try to create PR with retry
+          for attempt in 1 2 3; do
+            echo "🚀 Attempt $attempt to create PR..."
             
-            COMMIT_MSG=$(git log -1 --pretty=%s)
-            COMMIT_INFO=$(git log -1 --pretty=format:'%h - %s (%an, %ar)')
-            
-            PR_BODY="## Auto-generated PR
-          
-          This PR was automatically created from branch $BRANCH_NAME.
-          
-          ### Last Commit
-          $COMMIT_INFO"
-            
-            gh pr create \
+            if gh pr create \
               --base main \
               --head "$BRANCH_NAME" \
               --title "$COMMIT_MSG" \
-              --body "$PR_BODY" || echo "PR may already exist or failed to create"
-          fi
+              --body "$PR_BODY"; then
+              echo "✅ PR created successfully!"
+              exit 0
+            fi
+            
+            # Check if PR was created by another process
+            EXISTING_PR=$(gh pr list --head "$BRANCH_NAME" --base main --state open --json number,url --jq '.[0].url')
+            if [ -n "$EXISTING_PR" ] && [ "$EXISTING_PR" != "null" ]; then
+              echo "✅ PR already exists (created by concurrent process): $EXISTING_PR"
+              exit 0
+            fi
+            
+            if [ $attempt -lt 3 ]; then
+              echo "⏳ Waiting 5 seconds before retry..."
+              sleep 5
+            fi
+          done
+          
+          echo "❌ Failed to create PR after 3 attempts"
+          exit 1
