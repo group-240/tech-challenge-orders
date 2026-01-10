@@ -1,3 +1,8 @@
+# ============================================
+# Kubernetes Deployment para Orders Service
+# NOTA: O namespace é criado pelo repo tech-challenge-infra
+# ============================================
+
 # Kubernetes Secret for database credentials
 resource "kubernetes_secret" "db_credentials" {
   metadata {
@@ -7,8 +12,9 @@ resource "kubernetes_secret" "db_credentials" {
 
   data = {
     DB_HOST     = data.terraform_remote_state.rds.outputs.db_host
+    DB_PORT     = "5432"
     DB_NAME     = data.terraform_remote_state.rds.outputs.db_name
-    DB_USERNAME = var.db_username
+    DB_USER     = var.db_username
     DB_PASSWORD = var.db_password
   }
 
@@ -18,12 +24,15 @@ resource "kubernetes_secret" "db_credentials" {
 # Kubernetes Deployment
 resource "kubernetes_deployment" "app" {
   metadata {
-    name      = "${var.app_name}-deployment"
+    name      = var.app_name
     namespace = var.namespace
     labels = {
       app = var.app_name
     }
   }
+
+  # Evita erro "Unexpected Identity Change" 
+  wait_for_rollout = false
 
   spec {
     replicas = var.replicas
@@ -50,23 +59,49 @@ resource "kubernetes_deployment" "app" {
             container_port = var.container_port
           }
 
+          # Variáveis de ambiente via Kubernetes Secret
           env {
-            name = "SPRING_DATASOURCE_URL"
-            value = "jdbc:postgresql://${data.terraform_remote_state.rds.outputs.db_host}:5432/${data.terraform_remote_state.rds.outputs.db_name}"
-          }
-
-          env {
-            name = "SPRING_DATASOURCE_USERNAME"
+            name = "DB_HOST"
             value_from {
               secret_key_ref {
                 name = kubernetes_secret.db_credentials.metadata[0].name
-                key  = "DB_USERNAME"
+                key  = "DB_HOST"
               }
             }
           }
 
           env {
-            name = "SPRING_DATASOURCE_PASSWORD"
+            name = "DB_PORT"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.db_credentials.metadata[0].name
+                key  = "DB_PORT"
+              }
+            }
+          }
+
+          env {
+            name = "DB_NAME"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.db_credentials.metadata[0].name
+                key  = "DB_NAME"
+              }
+            }
+          }
+
+          env {
+            name = "DB_USER"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.db_credentials.metadata[0].name
+                key  = "DB_USER"
+              }
+            }
+          }
+
+          env {
+            name = "DB_PASSWORD"
             value_from {
               secret_key_ref {
                 name = kubernetes_secret.db_credentials.metadata[0].name
@@ -107,12 +142,19 @@ resource "kubernetes_deployment" "app" {
       }
     }
   }
+
+  # Ignora mudanças na imagem feitas por outros sistemas (ex: CI/CD manual)
+  lifecycle {
+    ignore_changes = [
+      spec[0].template[0].spec[0].container[0].image
+    ]
+  }
 }
 
 # Kubernetes Service
 resource "kubernetes_service" "app" {
   metadata {
-    name      = "${var.app_name}-service"
+    name      = var.app_name
     namespace = var.namespace
   }
 
