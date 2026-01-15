@@ -1,6 +1,7 @@
 # Tech Challenge - Orders
 
 Repositório responsável pelo microserviço de pedidos.
+- Integração com ms-customer e ms-payment
 
 ## O que este repositório faz
 
