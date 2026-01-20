@@ -59,7 +59,11 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
         
-        <!-- OAuth2 removido - autenticacao feita no API Gateway com Cognito -->
+        <!-- Spring Security (sem OAuth2 - autenticacao feita no API Gateway) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
         
         <!-- AWS SDK for Cognito (usado apenas para validacao de CPF) -->
         <dependency>
