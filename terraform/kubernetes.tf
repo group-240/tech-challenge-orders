@@ -142,13 +142,6 @@ resource "kubernetes_deployment" "app" {
       }
     }
   }
-
-  # Ignora mudanças na imagem feitas por outros sistemas (ex: CI/CD manual)
-  lifecycle {
-    ignore_changes = [
-      spec[0].template[0].spec[0].container[0].image
-    ]
-  }
 }
 
 # Kubernetes Service
