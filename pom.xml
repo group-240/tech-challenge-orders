@@ -65,13 +65,6 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         
-        <!-- AWS SDK for Cognito (usado apenas para validacao de CPF) -->
-        <dependency>
-            <groupId>software.amazon.awssdk</groupId>
-            <artifactId>cognitoidentityprovider</artifactId>
-            <version>2.21.29</version>
-        </dependency>
-        
         <!-- Database - PostgreSQL é o único banco de dados utilizado nesta aplicação -->
         <dependency>
             <groupId>org.postgresql</groupId>
