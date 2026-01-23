@@ -58,13 +58,19 @@ public class UseCaseConfig {
     }
 
     @Bean
-    public CustomerApiClient customerApiClient(@Value("${customer-api.base-url}") String baseUrl) {
-        return new CustomerApiClient(baseUrl);
+    public CustomerApiClient customerApiClient(
+            @Value("${customer-api.base-url}") String baseUrl,
+            @Value("${customer-api.connect-timeout:30000}") int connectTimeout,
+            @Value("${customer-api.read-timeout:60000}") int readTimeout) {
+        return new CustomerApiClient(baseUrl, connectTimeout, readTimeout);
     }
 
     @Bean
-    public PaymentApiClient paymentApiClient(@Value("${payment-api.base-url}") String baseUrl) {
-        return new PaymentApiClient(baseUrl);
+    public PaymentApiClient paymentApiClient(
+            @Value("${payment-api.base-url}") String baseUrl,
+            @Value("${payment-api.connect-timeout:30000}") int connectTimeout,
+            @Value("${payment-api.read-timeout:60000}") int readTimeout) {
+        return new PaymentApiClient(baseUrl, connectTimeout, readTimeout);
     }
 
     // Controllers de orquestração (adapters)
