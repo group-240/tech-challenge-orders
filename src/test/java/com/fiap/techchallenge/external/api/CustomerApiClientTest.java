@@ -15,7 +15,7 @@ class CustomerApiClientTest {
     @BeforeEach
     void setUp() {
         baseUrl = TestConfig.getCustomerApiUrl();
-        customerApiClient = new CustomerApiClient(baseUrl);
+        customerApiClient = new CustomerApiClient(baseUrl, 3000, 3000);
     }
 
     @Test
