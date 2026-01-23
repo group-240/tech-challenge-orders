@@ -30,12 +30,12 @@ class CustomerApiClientTest {
     void testShouldHandle404ResponseCorrectly() {
         // This test would require mocking HttpURLConnection which is complex
         // For now, we'll test the constructor and basic functionality
-        
+
         // Act & Assert
         // In a real implementation, we would mock HttpURLConnection
         // For this test coverage example, we'll just verify the client can be instantiated
         assertDoesNotThrow(() -> {
-            new CustomerApiClient(TestConfig.getCustomerApiUrl());
+            new CustomerApiClient(TestConfig.getCustomerApiUrl(), 3000, 3000);
         });
     }
 
@@ -44,11 +44,11 @@ class CustomerApiClientTest {
     void testShouldConstructProperUrlForCpfLookup() {
         // This tests the URL construction logic indirectly
         // In a real scenario, we would extract the URL building to a separate method for testing
-        
+
         // Arrange
         String testUrl = TestConfig.getCustomerApiUrl();
-        CustomerApiClient client = new CustomerApiClient(testUrl);
-        
+        CustomerApiClient client = new CustomerApiClient(testUrl, 3000, 3000);
+
         // Act & Assert
         assertNotNull(client);
         // URL construction is tested implicitly through the fetchCustomerByCpf method
@@ -59,10 +59,10 @@ class CustomerApiClientTest {
     void testShouldHandleRuntimeExceptionForNetworkErrors() {
         // This test demonstrates error handling for network issues
         // In practice, this would require proper mocking of network calls
-        
+
         // Arrange
-        CustomerApiClient client = new CustomerApiClient(TestConfig.INVALID_URL);
-        
+        CustomerApiClient client = new CustomerApiClient(TestConfig.INVALID_URL, 3000, 3000);
+
         // Act & Assert
         assertThrows(RuntimeException.class, () -> {
             client.fetchCustomerByCpf(TestConfig.TEST_CPF);
